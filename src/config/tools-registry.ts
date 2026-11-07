@@ -37,6 +37,12 @@ export const PSEO_CONFIG: Record<string, readonly PseoModifier[]> = {
   'pdf-to-ppt': ['for-mac', 'for-windows'],
   'doc-to-pdf': ['for-mac', 'for-windows', 'without-watermark'],
 
+  // High-Volume Core PDF Tools
+  'merge-pdf': ['for-mac', 'for-windows', 'on-iphone', 'without-watermark'],
+  'compress-pdf': ['for-mac', 'for-windows', 'on-iphone', 'without-watermark'],
+  'split-pdf': ['for-mac', 'for-windows'],
+  'rotate-pdf': ['for-mac', 'for-windows', 'on-iphone'],
+
   // Image Converters
   'jpg-to-pdf': ['on-iphone', 'for-mac', 'without-watermark'],
   'pdf-to-jpg': ['on-iphone', 'for-mac', 'for-windows'],
@@ -154,11 +160,9 @@ export const TOOLS_REGISTRY: Record<string, ToolDefinition> = {
   'ico-to-png': { id: 76, slug: 'ico-to-png', name: 'ICO to PNG', category: 'image', inputFormat: ['.ico'], outputFormat: 'png', description: 'Extract website favicon ICO files into editable PNG.', isClientReady: true },
   'gif-to-webp': { id: 77, slug: 'gif-to-webp', name: 'GIF to WebP', category: 'image', inputFormat: ['.gif'], outputFormat: 'webp', description: 'Convert heavy GIF animations into lightweight animated WebP.', isClientReady: true },
 
-  // ─── 5. ADDITIONAL TOOLS (78–79) ───────────────────────────────────
+  // ─── 5. ADDITIONAL UTILITIES (78–80) ───────────────────────────────
   'markdown-editor': { id: 78, slug: 'markdown-editor', name: 'Markdown Editor', category: 'utility', inputFormat: ['.md', '.txt'], outputFormat: 'md', description: 'Interactive browser-based live Markdown editor and previewer.', isClientReady: true },
   'image-converter': { id: 79, slug: 'image-converter', name: 'Image Converter', category: 'utility', inputFormat: ['.jpg', '.png', '.webp', '.avif', '.bmp'], outputFormat: 'png', description: 'Universal multi-format bulk image converter.', isClientReady: true },
-
-  // ─── 6. DOCUMENT VIEWER (80) ───────────────────────────────────────
   'view-documents-online': {
     id: 80,
     slug: 'view-documents-online',
@@ -167,6 +171,68 @@ export const TOOLS_REGISTRY: Record<string, ToolDefinition> = {
     inputFormat: ['.pdf', '.docx', '.xlsx', '.pptx', '.txt', '.csv', '.md', '.json', '.png', '.jpg', '.webp'],
     outputFormat: 'preview',
     description: 'Open and preview PDF, Word DOCX, Excel XLSX, PPTX, and images directly in your browser without software.',
+    isClientReady: true,
+  },
+
+  // ─── 6. HIGH-VOLUME CORE PDF TOOLS (81–86) ─────────────────────────
+  'merge-pdf': {
+    id: 81,
+    slug: 'merge-pdf',
+    name: 'Merge PDF',
+    category: 'document',
+    inputFormat: ['.pdf'],
+    outputFormat: 'pdf',
+    description: 'Combine multiple PDF files into a single organized document in your chosen order.',
+    isClientReady: true,
+  },
+  'compress-pdf': {
+    id: 82,
+    slug: 'compress-pdf',
+    name: 'Compress PDF',
+    category: 'document',
+    inputFormat: ['.pdf'],
+    outputFormat: 'pdf',
+    description: 'Reduce PDF file size significantly while retaining high vector text and image quality.',
+    isClientReady: true,
+  },
+  'split-pdf': {
+    id: 83,
+    slug: 'split-pdf',
+    name: 'Split PDF',
+    category: 'document',
+    inputFormat: ['.pdf'],
+    outputFormat: 'pdf',
+    description: 'Extract selected pages or divide large PDF documents into separate individual files.',
+    isClientReady: true,
+  },
+  'rotate-pdf': {
+    id: 84,
+    slug: 'rotate-pdf',
+    name: 'Rotate PDF',
+    category: 'document',
+    inputFormat: ['.pdf'],
+    outputFormat: 'pdf',
+    description: 'Rotate PDF pages clockwise or counterclockwise 90, 180, or 270 degrees permanently.',
+    isClientReady: true,
+  },
+  'protect-pdf': {
+    id: 85,
+    slug: 'protect-pdf',
+    name: 'Protect PDF',
+    category: 'document',
+    inputFormat: ['.pdf'],
+    outputFormat: 'pdf',
+    description: 'Encrypt your PDF with standard AES-128/256 password protection to prevent unauthorized access.',
+    isClientReady: true,
+  },
+  'unlock-pdf': {
+    id: 86,
+    slug: 'unlock-pdf',
+    name: 'Unlock PDF',
+    category: 'document',
+    inputFormat: ['.pdf'],
+    outputFormat: 'pdf',
+    description: 'Remove password security and editing restrictions from PDFs you have authorization to unlock.',
     isClientReady: true,
   },
 };

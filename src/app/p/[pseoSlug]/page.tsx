@@ -192,50 +192,24 @@ export async function generateMetadata({
   if (!parsed) return {};
 
   const { tool, modifier, cleanModifierName } = parsed;
-  const outExt = tool.outputFormat.toUpperCase();
-  const inputExts = cleanFormatsList(tool.inputFormat);
-
-  let title = `${tool.name} ${cleanModifierName} - Free Online Converter | PDFConverter`;
-  if (modifier === 'for-windows') {
-    title = `${tool.name} for Windows (11/10) - Free Online | PDFConverter`;
-  } else if (modifier === 'on-iphone') {
-    title = `${tool.name} on iPhone & iPad - Free Mobile Tool | PDFConverter`;
-  } else if (modifier === 'without-watermark') {
-    title = `${tool.name} without Watermark - 100% Free | PDFConverter`;
-  }
-
-  let description = '';
-  if (modifier === 'without-watermark') {
-    description = `Convert ${inputExts} files to ${outExt} completely free with no added logos or branding. Clean, high-resolution document export directly in your browser.`;
-  } else if (modifier === 'for-mac') {
-    description = `Convert ${inputExts} to ${outExt} on macOS using Safari or Chrome. Preserves Apple system fonts and layout with no software installation required.`;
-  } else if (modifier === 'for-windows') {
-    description = `Convert ${inputExts} to ${outExt} on Windows 11 and 10 without Microsoft Office or third-party executable apps. Fast and private in-browser tool.`;
-  } else if (modifier === 'on-iphone') {
-    description = `Convert ${inputExts} to ${outExt} on iPhone and iPad directly in Safari. Access files from iCloud Drive or Photos with zero App Store downloads.`;
-  }
-
   const canonical = `https://www.pdfconverter.space/p/${pseoSlug}`;
 
   return {
-    title,
-    description,
-    alternates: { canonical },
-    openGraph: {
-      title,
-      description,
-      url: canonical,
-      siteName: 'PDFConverter',
-      type: 'website',
-    },
-    twitter: {
-      card: 'summary',
-      title,
-      description,
+    title: `${tool.name} ${cleanModifierName} - Free Online Converter | PDFConverter`,
+    description: `Fast and secure ${tool.name} ${cleanModifierName}. No software installation or account required. Runs 100% in browser.`,
+    alternates: {
+      canonical,
     },
     robots: {
       index: true,
       follow: true,
+    },
+    openGraph: {
+      title: `${tool.name} ${cleanModifierName} - Free Online Converter`,
+      description: `Fast and secure ${tool.name} ${cleanModifierName}. In-browser processing with zero registration.`,
+      url: canonical,
+      siteName: 'PDFConverter',
+      type: 'website',
     },
   };
 }
@@ -248,8 +222,6 @@ export default async function PseoPage({
   const { pseoSlug } = await params;
   const parsed = parsePseoSlug(pseoSlug);
 
-  // If uncurated modifier requested for an existing tool (e.g. /p/word-to-pdf-fast),
-  // permanently consolidate equity to the parent tool page instead of leaving soft 404s
   if (!parsed) {
     const legacyTool = findToolForLegacySlug(pseoSlug);
     if (legacyTool) {
@@ -294,7 +266,6 @@ export default async function PseoPage({
       />
 
       <div className="max-w-4xl mx-auto text-center space-y-4">
-        {/* Breadcrumb Navigation */}
         <nav className="text-xs text-slate-400 flex justify-center items-center gap-2" aria-label="Breadcrumb">
           <Link href="/" className="hover:underline">Home</Link>
           <span>/</span>
@@ -320,7 +291,6 @@ export default async function PseoPage({
           {content.guideText}
         </p>
 
-        {/* Technical Specs Bar */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 max-w-2xl mx-auto pt-2 text-left">
           {content.specs.map((spec, i) => (
             <div key={i} className="p-2.5 bg-white dark:bg-[#111625] rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
@@ -334,7 +304,6 @@ export default async function PseoPage({
           <ConverterWidget tool={tool} />
         </div>
 
-        {/* Sibling Platform Switcher Links */}
         {allowedModifiers.length > 1 && (
           <div className="p-3 bg-white dark:bg-[#111625] rounded-2xl border border-slate-200/80 dark:border-slate-800 max-w-xl mx-auto flex flex-wrap items-center justify-center gap-2 text-xs">
             <span className="text-slate-400 font-medium">Other options:</span>
@@ -352,7 +321,6 @@ export default async function PseoPage({
           </div>
         )}
 
-        {/* Actionable OS Walkthrough Steps */}
         <section className="text-left mt-16 max-w-2xl mx-auto border-t border-slate-200 dark:border-slate-800 pt-8">
           <div className="inline-block px-2.5 py-1 bg-rose-50 dark:bg-rose-950/40 text-[#FF2E54] text-xs font-bold rounded-lg mb-2">
             {content.heroBadge}
