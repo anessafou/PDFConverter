@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="pdfGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF476E"/>
+      <stop offset="100%" stop-color="#FF2E54"/>
+    </linearGradient>
+  </defs>
+  <!-- Brand Squircle Background -->
+  <rect width="64" height="64" rx="16" fill="url(#pdfGrad)"/>
+  <!-- White PDF Document with Folded Corner -->
+  <path d="M42 22v-3.5a2.5 2.5 0 0 0-2.5-2.5h-15A2.5 2.5 0 0 0 22 18.5v27a2.5 2.5 0 0 0 2.5 2.5h19a2.5 2.5 0 0 0 2.5-2.5V26a4 4 0 0 0-4-4Z" fill="white" fill-opacity="0.18"/>
+  <path d="M41 22v-3.5A2.5 2.5 0 0 0 38.5 16h-15A2.5 2.5 0 0 0 21 18.5v27a2.5 2.5 0 0 0 2.5 2.5h19a2.5 2.5 0 0 0 2.5-2.5V26a4 4 0 0 0-4-4h0Z" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Folded Corner Flap -->
+  <path d="M38.5 16v3.5a2.5 2.5 0 0 0 2.5 2.5H45" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Document Content Indicator Lines -->
+  <path d="M28 29h8m-8 6h8m-8 6h5" stroke="white" stroke-width="3" stroke-linecap="round"/>
+</svg>
