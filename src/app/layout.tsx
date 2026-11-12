@@ -1,3 +1,6 @@
+import { requestLocale } from '@/locales/server';
+import { LocaleProvider } from '@/locales/LocaleProvider';
+import { LOCALES_CONFIG } from '@/config/i18n-registry';
 // src/app/layout.tsx
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
@@ -14,7 +17,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'PDFConverter - Free Online PDF & Document Suite',
-  description: 'Convert, edit, and preview your PDF, Office, and image files online for free. In-browser processing with zero registration or installation required.',
+  description: 'Convert, organize and preview PDF, Office and image files. Some tools run in your browser, and others use a conversion service.',
   metadataBase: new URL('https://www.pdfconverter.space'),
   alternates: {
     canonical: 'https://www.pdfconverter.space',
@@ -48,13 +51,14 @@ export const metadata: Metadata = {
   manifest: '/site.webmanifest',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await requestLocale();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} dir={LOCALES_CONFIG[locale].dir} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-darkBg dark:text-slate-100 transition-colors duration-200 antialiased">
         <Script
   id="google-tag-manager"
@@ -78,11 +82,11 @@ export default function RootLayout({
     style={{ display: 'none', visibility: 'hidden' }}
   />
 </noscript>
-        <ThemeProvider>
+        <LocaleProvider locale={locale}><ThemeProvider>
           <Header />
           <div className="flex-1">{children}</div>
           <Footer />
-        </ThemeProvider>
+        </ThemeProvider></LocaleProvider>
       </body>
     </html>
   );

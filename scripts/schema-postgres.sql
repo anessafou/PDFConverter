@@ -25,3 +25,5 @@ CREATE TABLE IF NOT EXISTS rate_limits (
 );
 
 CREATE INDEX IF NOT EXISTS idx_rate_limits_expire ON rate_limits(expire_at);
+-- Safe to run against an existing Neon reviews table; preserves all rows.
+ALTER TABLE reviews ADD COLUMN IF NOT EXISTS helpful_count INTEGER NOT NULL DEFAULT 0 CHECK (helpful_count >= 0);

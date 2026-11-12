@@ -1,24 +1,18 @@
+import { pageMetadata } from '@/config/page-metadata';
+import { generateHreflangAlternates } from '@/config/i18n-registry';
+import { DICTIONARIES } from '@/locales/dictionaries';
+export const dynamic = 'force-dynamic';
 // src/app/page.tsx
 import React from 'react';
 import { Metadata } from 'next';
-import { reviewsRepository } from '@/core/reviews/reviews-repository';
 import HomeTemplate from '@/components/pseo/templates/HomeTemplate';
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: 'PDFConverter - Free Online PDF & Document Suite',
-  description: 'Convert, compress, and edit PDF, Office, and image files online for free. In-browser processing with no account required.',
-  alternates: {
-    canonical: 'https://www.pdfconverter.space',
-  },
-};
+const home = DICTIONARIES.en.home;
+const { canonical, languages } = generateHreflangAlternates();
+export const metadata: Metadata = pageMetadata('en', home.title, home.description, canonical, languages);
 
 export default async function HomePage() {
-  const [stats, reviews] = await Promise.all([
-    reviewsRepository.getAggregateStats('site'),
-    reviewsRepository.getPublishedReviews('site', { limit: 50 }),
-  ]);
-
-  return <HomeTemplate locale="en" stats={stats} reviews={reviews} />;
+  return <HomeTemplate locale="en" />;
 }

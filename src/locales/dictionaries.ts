@@ -1,3 +1,6 @@
+import { TOOLS_REGISTRY } from '@/config/tools-registry';
+import { getToolContent } from '@/config/tool-content';
+import uiCatalog from './ui-catalog.json';
 // src/locales/dictionaries.ts
 import { Locale } from '@/config/i18n-registry';
 
@@ -37,14 +40,6 @@ export interface TranslationDictionary {
     popularTools: string;
     popularToolsSub: string;
     whyChoose: string;
-    why1: string;
-    why1Sub: string;
-    why2: string;
-    why2Sub: string;
-    why3: string;
-    why3Sub: string;
-    why4: string;
-    why4Sub: string;
   };
   tools: Record<string, {
     title: string;
@@ -75,7 +70,7 @@ export const DICTIONARIES: Record<Locale, TranslationDictionary> = {
     },
     home: {
       title: 'PDFConverter - Free Online PDF & Document Suite',
-      description: 'Convert, compress, and edit PDF, Office, and image files online for free. In-browser processing with no account required.',
+      description: "Convert, organize and preview PDF, Office and image files. Some tools run in your browser, and others use a conversion service.",
       heroH1Pre: 'We make ',
       heroH1Span: 'PDF',
       heroH1Post: ' easy.',
@@ -91,33 +86,17 @@ export const DICTIONARIES: Record<Locale, TranslationDictionary> = {
       popularTools: 'Most Popular PDF Tools',
       popularToolsSub: 'The tools you need most, all in one place. Simple, fast and reliable.',
       whyChoose: 'Why Choose PDFConverter?',
-      why1: 'Super Fast & Reliable',
-      why1Sub: 'High-speed conversion engine preserving your original layout and text formatting.',
-      why2: 'Secure & Private',
-      why2Sub: 'Client-supported conversions run in your browser. Server files are deleted automatically.',
-      why3: 'Works on Any Device',
-      why3Sub: 'Use it on your desktop, tablet, or mobile — anytime, anywhere.',
-      why4: '100% Free to Use',
-      why4Sub: 'Free conversions up to 100MB with no daily task caps. No registration required.'
     },
     tools: {
       'word-to-pdf': {
         title: 'Word to PDF - Free Online Converter | PDFConverter',
         h1: 'Word to PDF Converter',
-        description: 'Convert Microsoft Word DOCX and DOC documents to high-quality PDF files online. Fast, secure, and preserves all formatting.',
-        faqs: [
-          { q: 'Will my fonts and tables remain unchanged?', a: 'Yes. Our conversion engine mirrors Microsoft Word rendering to ensure all spacing, tables, and typography stay intact.' },
-          { q: 'Is this Word to PDF converter free?', a: 'Yes, it is 100% free with no account creation, email requirement, or watermarks.' },
-        ],
+        description: "",
       },
       'pdf-to-word': {
         title: 'PDF to Word - Free Online Converter | PDFConverter',
         h1: 'PDF to Word Converter',
-        description: 'Convert PDF documents into editable Microsoft Word DOCX files. Preserves paragraphs, formatting, and layout.',
-        faqs: [
-          { q: 'Can I edit the converted Word document?', a: 'Yes. The output is a genuine, editable .docx file that opens in Microsoft Word, Google Docs, and LibreOffice.' },
-          { q: 'Are my confidential documents secure?', a: 'Yes. Client operations run in browser memory, and any server-processed files are permanently deleted after 60 minutes.' },
-        ],
+        description: "",
       },
     }
   },
@@ -141,7 +120,7 @@ export const DICTIONARIES: Record<Locale, TranslationDictionary> = {
     },
     home: {
       title: 'PDFConverter - Suite d\'outils PDF et Documents Gratuite',
-      description: 'Convertissez, compressez et modifiez des PDF et images en ligne gratuitement. Traitement sécurisé sans compte requis.',
+      description: "Convertissez, organisez et prévisualisez vos PDF, fichiers Office et images. Certains outils fonctionnent dans le navigateur, d’autres utilisent un service de conversion.",
       heroH1Pre: 'Nous rendons les ',
       heroH1Span: 'PDF',
       heroH1Post: ' faciles.',
@@ -157,33 +136,17 @@ export const DICTIONARIES: Record<Locale, TranslationDictionary> = {
       popularTools: 'Outils PDF les plus populaires',
       popularToolsSub: 'Les outils dont vous avez le plus besoin. Simples, rapides et fiables.',
       whyChoose: 'Pourquoi choisir PDFConverter ?',
-      why1: 'Ultra Rapide & Fiable',
-      why1Sub: 'Moteur de conversion haute vitesse préservant votre mise en page originale.',
-      why2: 'Sécurisé & Privé',
-      why2Sub: 'Vos fichiers sont traités en sécurité et supprimés automatiquement de nos serveurs.',
-      why3: 'Compatible Tous Appareils',
-      why3Sub: 'Utilisez-le sur ordinateur, tablette ou mobile — partout et à tout moment.',
-      why4: '100% Gratuit',
-      why4Sub: 'Conversions gratuites jusqu\'à 100 Mo. Aucune inscription requise.'
     },
     tools: {
       'word-to-pdf': {
         title: 'Convertir Word en PDF - Gratuit et en Ligne | PDFConverter',
         h1: 'Convertir Word en PDF',
-        description: 'Convertissez vos documents Word DOCX et DOC en fichiers PDF de haute qualité en ligne. Rapide, sécurisé et préserve la mise en page.',
-        faqs: [
-          { q: 'La mise en page de mon document Word sera-t-elle conservée ?', a: 'Oui. Notre moteur préserve fidèlement les polices, tableaux et marges de votre document d’origine.' },
-          { q: 'Le convertisseur Word en PDF est-il gratuit ?', a: 'Oui, 100% gratuit, sans inscription, sans filigrane et sans limite cachée.' },
-        ],
+        description: "",
       },
       'pdf-to-word': {
         title: 'Convertir PDF en Word - Gratuit et en Ligne | PDFConverter',
         h1: 'Convertir PDF en Word',
-        description: 'Convertissez vos documents PDF en fichiers Microsoft Word DOCX modifiables. Récupérez facilement vos textes et tableaux.',
-        faqs: [
-          { q: 'Puis-je modifier le fichier Word généré ?', a: 'Oui. Le document DOCX produit est totalement modifiable dans Microsoft Word, Google Docs et LibreOffice.' },
-          { q: 'Mes documents sont-ils protégés ?', a: 'Absolument. Vos fichiers ne sont jamais conservés et sont automatiquement supprimés de nos serveurs.' },
-        ],
+        description: "",
       },
     }
   },
@@ -207,7 +170,7 @@ export const DICTIONARIES: Record<Locale, TranslationDictionary> = {
     },
     home: {
       title: 'PDFConverter - Herramientas PDF y Documentos Gratis',
-      description: 'Convierte, comprime y edita archivos PDF, Office e imágenes online gratis. Procesamiento en el navegador sin cuenta.',
+      description: "Convierte, organiza y previsualiza PDF, archivos de Office e imágenes. Algunas herramientas funcionan en el navegador y otras usan un servicio de conversión.",
       heroH1Pre: 'Hacemos el ',
       heroH1Span: 'PDF',
       heroH1Post: ' muy fácil.',
@@ -223,33 +186,17 @@ export const DICTIONARIES: Record<Locale, TranslationDictionary> = {
       popularTools: 'Herramientas PDF Populares',
       popularToolsSub: 'Las herramientas que más necesitas, en un solo lugar. Simples y fiables.',
       whyChoose: '¿Por qué elegir PDFConverter?',
-      why1: 'Súper Rápido y Fiable',
-      why1Sub: 'Motor de conversión de alta velocidad que preserva el formato original.',
-      why2: 'Seguro y Privado',
-      why2Sub: 'Los archivos procesados se eliminan automáticamente de nuestros servidores.',
-      why3: 'Funciona en cualquier dispositivo',
-      why3Sub: 'Úsalo en tu PC, tablet o móvil — en cualquier momento y lugar.',
-      why4: '100% Gratis',
-      why4Sub: 'Conversiones gratis hasta 100MB. Sin necesidad de registrarse.'
     },
     tools: {
       'word-to-pdf': {
         title: 'Convertir Word a PDF - Gratis y Online | PDFConverter',
         h1: 'Convertir Word a PDF',
-        description: 'Convierte tus documentos Word DOCX a PDF con máxima calidad online. Rápido, seguro y manteniendo todo el formato original.',
-        faqs: [
-          { q: '¿Se mantiene el formato y las fuentes originales?', a: 'Sí. El conversor respeta exactamente los márgenes, tablas, imágenes y tipografía de tu archivo Word.' },
-          { q: '¿Es realmente gratis este conversor?', a: 'Sí, 100% gratuito, sin marcas de agua y sin necesidad de crear una cuenta.' },
-        ],
+        description: "",
       },
       'pdf-to-word': {
         title: 'Convertir PDF a Word - Gratis y Online | PDFConverter',
         h1: 'Convertir PDF a Word',
-        description: 'Convierte documentos PDF a archivos Word DOCX editables en segundos con alta precisión de formato.',
-        faqs: [
-          { q: '¿El archivo Word resultante se puede editar?', a: 'Sí. Obtendrás un archivo DOCX totalmente editable compatible con Microsoft Word y Google Docs.' },
-          { q: '¿Están seguros mis documentos?', a: 'Totalmente. Tus archivos se procesan de forma privada y segura.' },
-        ],
+        description: "",
       },
     }
   },
@@ -273,7 +220,7 @@ export const DICTIONARIES: Record<Locale, TranslationDictionary> = {
     },
     home: {
       title: 'PDFConverter - Kostenlose Online PDF-Suite',
-      description: 'Konvertieren, komprimieren und bearbeiten Sie PDF, Office und Bilder kostenlos online. Keine Registrierung erforderlich.',
+      description: "Konvertieren, organisieren und prüfen Sie PDF-, Office- und Bilddateien. Manche Werkzeuge arbeiten im Browser, andere nutzen einen Konvertierungsdienst.",
       heroH1Pre: 'Wir machen ',
       heroH1Span: 'PDF',
       heroH1Post: ' ganz einfach.',
@@ -289,33 +236,17 @@ export const DICTIONARIES: Record<Locale, TranslationDictionary> = {
       popularTools: 'Beliebteste PDF-Tools',
       popularToolsSub: 'Die wichtigsten Tools an einem Ort. Einfach, schnell und zuverlässig.',
       whyChoose: 'Warum PDFConverter wählen?',
-      why1: 'Superschnell & Zuverlässig',
-      why1Sub: 'Hochgeschwindigkeits-Konvertierung, die das Original-Layout beibehält.',
-      why2: 'Sicher & Privat',
-      why2Sub: 'Server-Dateien werden nach der Verarbeitung automatisch dauerhaft gelöscht.',
-      why3: 'Funktioniert auf jedem Gerät',
-      why3Sub: 'Nutzen Sie es auf Desktop, Tablet oder Smartphone — jederzeit und überall.',
-      why4: '100% Kostenlos',
-      why4Sub: 'Kostenlose Konvertierungen bis zu 100 MB. Keine Registrierung nötig.'
     },
     tools: {
       'word-to-pdf': {
         title: 'Word in PDF umwandeln - Kostenlos Online | PDFConverter',
         h1: 'Word in PDF umwandeln',
-        description: 'Konvertieren Sie Microsoft Word DOCX-Dokumente schnell und kostenlos online in hochwertige PDF-Dateien.',
-        faqs: [
-          { q: 'Bleibt das Layout meines Word-Dokuments erhalten?', a: 'Ja, alle Formatierungen, Tabellen und Schriftarten bleiben exakt wie im Originaldokument erhalten.' },
-          { q: 'Ist das Tool wirklich kostenlos?', a: 'Ja, 100% kostenlos ohne Wasserzeichen oder Anmeldung.' },
-        ],
+        description: "",
       },
       'pdf-to-word': {
         title: 'PDF in Word umwandeln - Kostenlos Online | PDFConverter',
         h1: 'PDF in Word umwandeln',
-        description: 'Wandeln Sie PDF-Dokumente online in bearbeitbare Word DOCX-Dateien um. Schnelle und sichere Textextraktion.',
-        faqs: [
-          { q: 'Kann das ausgegebene Word-Dokument bearbeitet werden?', a: 'Ja, Sie erhalten eine vollständig bearbeitbare DOCX-Datei.' },
-          { q: 'Sind meine Daten geschützt?', a: 'Ja, Datenschutz hat höchste Priorität. Ihre Dateien werden streng vertraulich behandelt.' },
-        ],
+        description: "",
       },
     }
   },
@@ -339,7 +270,7 @@ export const DICTIONARIES: Record<Locale, TranslationDictionary> = {
     },
     home: {
       title: 'PDFConverter - أدوات PDF والمستندات المجانية',
-      description: 'قم بتحويل وضغط وتعديل ملفات PDF و Office والصور عبر الإنترنت مجانًا. معالجة سريعة وبدون الحاجة لإنشاء حساب.',
+      description: "حوّل ملفات PDF وOffice والصور ونظّمها وعاينها. تعمل بعض الأدوات في المتصفح وتستخدم أخرى خدمة تحويل.",
       heroH1Pre: 'نجعل التعامل مع ',
       heroH1Span: 'PDF',
       heroH1Post: ' سهلاً للغاية.',
@@ -355,34 +286,45 @@ export const DICTIONARIES: Record<Locale, TranslationDictionary> = {
       popularTools: 'أدوات PDF الأكثر استخداماً',
       popularToolsSub: 'الأدوات التي تحتاجها أكثر، في مكان واحد. بسيطة وسريعة وموثوقة.',
       whyChoose: 'لماذا تختار PDFConverter؟',
-      why1: 'سريع جداً وموثوق',
-      why1Sub: 'محرك تحويل عالي السرعة يحافظ على التنسيق والخطوط الأصلية.',
-      why2: 'آمن وخاص',
-      why2Sub: 'تتم معالجة الملفات بأمان وتُحذف تلقائياً من الخوادم بعد الانتهاء.',
-      why3: 'يعمل على جميع الأجهزة',
-      why3Sub: 'استخدمه على الكمبيوتر، الجهاز اللوحي أو الهاتف المحمول — في أي وقت ومكان.',
-      why4: 'مجاني 100% للاستخدام',
-      why4Sub: 'تحويل مجاني للملفات حتى 100 ميجابايت. لا حاجة لإنشاء حساب.'
     },
     tools: {
       'word-to-pdf': {
         title: 'تحويل وورد الى PDF - مجاناً وبسرعة عبر الإنترنت | PDFConverter',
         h1: 'تحويل وورد إلى PDF',
-        description: 'قم بتحويل مستندات Word و DOCX إلى ملفات PDF عالية الجودة عبر الإنترنت مجاناً وبدون فقدان التنسيق.',
-        faqs: [
-          { q: 'هل يتم الحفاظ على الخطوط والجداول الأصلية؟', a: 'نعم، يحافظ محرك التحويل على دقة الجداول والخطوط وتنسيق الفقرات بالكامل.' },
-          { q: 'هل الأداة مجانية وبدون علامات مائية؟', a: 'نعم، مجانية 100% بدون أي علامات مائية وبدون الحاجة إلى التسجيل أو البريد الإلكتروني.' },
-        ],
+        description: "",
       },
       'pdf-to-word': {
         title: 'تحويل PDF الى وورد - مستند Word قابل للتعديل مجاناً | PDFConverter',
         h1: 'تحويل PDF إلى Word',
-        description: 'حوّل ملفات PDF إلى مستندات Word DOCX قابلة للتعديل بسهولة وسرعة فائقة مباشرة في متصفحك.',
-        faqs: [
-          { q: 'هل يمكنني تعديل ملف Word الناتج؟', a: 'نعم، ستحصل على ملف DOCX حقيقي قابل للتحرير والتعديل على أي برنامج معالجة نصوص.' },
-          { q: 'هل ملفاتي آمنة ومحمية؟', a: 'نعم بكل تأكيد، تتم معالجة المستندات في ذاكرة المتصفح بأمان وتُحذف فوراً.' },
-        ],
+        description: "",
       },
     }
   }
 };
+// Complete every service while retaining the original editorial translations.
+const nonEnglish = ['fr', 'es', 'de', 'ar'] as const;
+for (const tool of Object.values(TOOLS_REGISTRY)) {
+  DICTIONARIES.en.tools[tool.slug] ||= { title: tool.name + ' - PDFConverter', h1: tool.name, description: tool.description };
+  for (const [index, locale] of nonEnglish.entries()) {
+    if (DICTIONARIES[locale].tools[tool.slug]) continue;
+    const special = uiCatalog.find(row => row[0] === tool.name)?.[index + 1];
+    const pair = tool.name.split(' to ');
+    const h1 = special || (pair.length === 2 ? (
+      locale === 'fr' ? 'Convertir ' + pair[0] + ' en ' + pair[1] :
+      locale === 'es' ? 'Convertir ' + pair[0] + ' a ' + pair[1] :
+      locale === 'de' ? pair[0] + ' in ' + pair[1] + ' umwandeln' :
+      'تحويل ' + pair[0] + ' إلى ' + pair[1]
+    ) : tool.name);
+    const description = getToolContent(tool, locale).description;
+    const label = ({ fr: 'Gratuit en ligne', es: 'Gratis en línea', de: 'Kostenlos online', ar: 'مجاني عبر الإنترنت' })[locale];
+    DICTIONARIES[locale].tools[tool.slug] = { title: h1 + ' - ' + label + ' | PDFConverter', h1, description };
+  }
+}
+
+// Use the same processing facts on tool pages and platform guides.
+for (const tool of Object.values(TOOLS_REGISTRY)) {
+  for (const locale of ['en', ...nonEnglish] as const) {
+    const { description, faqs } = getToolContent(tool, locale);
+    Object.assign(DICTIONARIES[locale].tools[tool.slug], { description, faqs });
+  }
+}

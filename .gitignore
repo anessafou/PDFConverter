@@ -4,3 +4,11 @@ node_modules
 out
 .env*.local
 *.log
+public/vendor/
+test-results/
+playwright-report/
+*.tsbuildinfo
+
+.env
+.env.*
+!.env.example

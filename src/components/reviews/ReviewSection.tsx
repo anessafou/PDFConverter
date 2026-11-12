@@ -1,5 +1,8 @@
 // src/components/reviews/ReviewSection.tsx
 'use client';
+import { writtenReviews } from '@/core/reviews/written-reviews';
+import { useTranslations, useLocalizedPath, useLocale } from '@/locales/LocaleProvider';
+
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { Review, AggregateRatingStats } from '@/core/reviews/reviews.interface';
@@ -18,6 +21,9 @@ export default function ReviewSection({
   initialStats = null,
   initialReviews = [],
 }: ReviewSectionProps) {
+  const locale = useLocale();
+  const t = useTranslations();
+
   const [reviews, setReviews] = useState<Review[]>(initialReviews);
   const [stats, setStats] = useState<AggregateRatingStats | null>(initialStats);
   const [isLoading, setIsLoading] = useState(initialReviews.length === 0 && !initialStats);
@@ -47,68 +53,16 @@ export default function ReviewSection({
   const [votedIds, setVotedIds] = useState<Set<string>>(new Set());
 
   // ─── Filter, Deduplicate & Prioritize Reviews ───────────────────────────
-  const processedReviews = useMemo(() => {
-    // 1. Only genuine reviews with substantive written comments (hide empty ratings)
-    const withComments = reviews.filter(
-      (r) => typeof r.comment === 'string' && r.comment.trim().length > 0
-    );
-
-    // 2. Deduplicate reviews by normalized author and comment text
-    const seen = new Set<string>();
-    const unique: Review[] = [];
-    for (const r of withComments) {
-      const key = `${r.authorName.trim().toLowerCase()}|${r.comment!.trim().toLowerCase()}`;
-      if (!seen.has(key)) {
-        seen.add(key);
-        unique.push(r);
-      }
-    }
-
-    // 3. When default sorting, prioritize reviews naturally mentioning core features
-    if (sortBy === 'newest') {
-      const featureKeywords = [
-        'pdflab',
-        'pdfconverter',
-        'pdf converter',
-        'converter',
-        'merge pdf',
-        'merge',
-        'compress pdf',
-        'compress',
-        'pdf to word',
-        'word to pdf',
-        'free pdf',
-        'free',
-        'ease of use',
-        'easy to use',
-        'fast',
-        'in-browser',
-        'without watermark',
-      ];
-
-      return [...unique].sort((a, b) => {
-        const aText = `${a.title || ''} ${a.comment || ''}`.toLowerCase();
-        const bText = `${b.title || ''} ${b.comment || ''}`.toLowerCase();
-        const aScore = featureKeywords.reduce((acc, kw) => acc + (aText.includes(kw) ? 1 : 0), 0);
-        const bScore = featureKeywords.reduce((acc, kw) => acc + (bText.includes(kw) ? 1 : 0), 0);
-
-        if (bScore !== aScore) {
-          return bScore - aScore; // Higher relevance first
-        }
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      });
-    }
-
-    return unique;
-  }, [reviews, sortBy]);
+  const processedReviews = useMemo(() => writtenReviews(reviews), [reviews]);
 
   // ─── Track Horizontal Scroll Boundaries ─────────────────────────────────
   const updateScrollButtons = useCallback(() => {
     if (!sliderRef.current) return;
     const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-    setCanScrollLeft(scrollLeft > 6);
-    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
-  }, []);
+    const position = locale === 'ar' ? -scrollLeft : scrollLeft;
+    setCanScrollLeft(locale === 'ar' ? position + clientWidth < scrollWidth - 10 : position > 6);
+    setCanScrollRight(locale === 'ar' ? position > 6 : position + clientWidth < scrollWidth - 10);
+  }, [locale]);
 
   useEffect(() => {
     updateScrollButtons();
@@ -129,6 +83,17 @@ export default function ReviewSection({
     const firstCard = container.querySelector<HTMLElement>('.review-slider-card');
     const scrollStep = firstCard ? firstCard.offsetWidth + 16 : 360;
 
+    if (locale === 'ar') {
+      const maximum = container.scrollWidth - container.clientWidth;
+      const atStart = container.scrollLeft >= -10;
+      const atEnd = -container.scrollLeft + container.clientWidth >= container.scrollWidth - 15;
+      const left = direction === 'left'
+        ? (atEnd ? 0 : Math.max(-maximum, container.scrollLeft - scrollStep))
+        : (atStart ? -maximum : Math.min(0, container.scrollLeft + scrollStep));
+      container.scrollTo({ left, behavior: 'smooth' });
+      setTimeout(updateScrollButtons, 350);
+      return;
+    }
     if (direction === 'left') {
       if (container.scrollLeft <= 10) {
         // Smooth loop to the end
@@ -286,10 +251,9 @@ export default function ReviewSection({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-              User Reviews & Ratings
-            </h2>
+              {t("User Reviews & Ratings")}</h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-              Feedback submitted by users for {toolName}.
+              {t("Feedback submitted by users for ")}{t(toolName)}.
             </p>
           </div>
 
@@ -305,7 +269,7 @@ export default function ReviewSection({
                 className="px-4 py-2 bg-[#FF2E54] hover:bg-[#E02447] text-white text-xs font-bold rounded-xl shadow-md shadow-rose-500/20 transition-all flex items-center gap-1.5"
               >
                 <span>★</span>
-                <span>Write a Review</span>
+                <span>{t("Write a Review")}</span>
               </button>
             )}
           </div>
@@ -316,17 +280,17 @@ export default function ReviewSection({
           <div className="bg-white dark:bg-[#111625] rounded-2xl p-6 border border-slate-200/90 dark:border-slate-800/80 shadow-sm mb-8 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
             <div className="text-center md:border-r border-slate-100 dark:border-slate-800/80 md:pr-6">
               <div className="text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-                {stats.ratingValue.toFixed(1)}
+                {t(stats.ratingValue.toFixed(1))}
               </div>
               <div className="flex justify-center gap-1 my-2 text-amber-400 text-lg">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span key={star}>
-                    {star <= Math.round(stats.ratingValue) ? '★' : '☆'}
+                    {t(star <= Math.round(stats.ratingValue) ? '★' : '☆')}
                   </span>
                 ))}
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Based on <span className="font-bold text-slate-800 dark:text-slate-200">{stats.reviewCount.toLocaleString()}</span> {stats.reviewCount === 1 ? 'user review' : 'user reviews'}
+                {t("Based on ")}<span className="font-bold text-slate-800 dark:text-slate-200">{t(stats.reviewCount.toLocaleString())}</span> {t(stats.reviewCount === 1 ? 'user review' : 'user reviews')}
               </p>
             </div>
 
@@ -346,8 +310,7 @@ export default function ReviewSection({
                     }`}
                   >
                     <span className="w-14 font-bold text-slate-600 dark:text-slate-400 group-hover:text-[#FF2E54] text-left">
-                      {stars} stars
-                    </span>
+                      {stars} {t(" stars")}</span>
                     <div className="flex-1 bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
                       <div
                         className="bg-amber-400 h-full rounded-full transition-all duration-500"
@@ -355,7 +318,7 @@ export default function ReviewSection({
                       />
                     </div>
                     <span className="w-10 text-right font-mono text-slate-400">
-                      {count.toLocaleString()}
+                      {t(count.toLocaleString())}
                     </span>
                   </button>
                 );
@@ -366,11 +329,10 @@ export default function ReviewSection({
           !isLoading && (
             <div className="bg-slate-50 dark:bg-slate-900/40 rounded-2xl p-8 border border-dashed border-slate-200 dark:border-slate-800 text-center mb-8">
               <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                No reviews yet for {toolName}.
+                {t("No reviews yet for ")}{t(toolName)}.
               </p>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Be the first to share your experience with this tool!
-              </p>
+                {t("Be the first to share your experience with this tool!")}</p>
             </div>
           )
         )}
@@ -380,20 +342,19 @@ export default function ReviewSection({
           <div className="bg-white dark:bg-[#111625] rounded-2xl p-6 sm:p-8 border border-rose-200/80 dark:border-rose-900/40 shadow-xl mb-8 transition-all">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-base font-bold text-slate-900 dark:text-white">
-                Review {toolName}
+                {t("Review ")}{t(toolName)}
               </h3>
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
                 className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
               >
-                Cancel
-              </button>
+                {t("Cancel")}</button>
             </div>
 
             {submitSuccess ? (
               <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
-                ✓ {submitSuccess}
+                ✓ {t(submitSuccess)}
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -410,7 +371,7 @@ export default function ReviewSection({
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                    Your Rating <span className="text-rose-500">*</span>
+                    {t("Your Rating ")}<span className="text-rose-500">*</span>
                   </label>
                   <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -421,20 +382,19 @@ export default function ReviewSection({
                         onMouseEnter={() => setHoverRating(star)}
                         onMouseLeave={() => setHoverRating(0)}
                         className="text-3xl text-amber-400 focus:outline-none transition-transform hover:scale-110"
-                        aria-label={`Rate ${star} stars`}
+                        aria-label={t(`Rate ${star} stars`)}
                       >
-                        {star <= (hoverRating || rating) ? '★' : '☆'}
+                        {t(star <= (hoverRating || rating) ? '★' : '☆')}
                       </button>
                     ))}
                     <span className="text-xs font-bold text-slate-600 dark:text-slate-400 ml-3">
-                      {hoverRating || rating} out of 5 Stars
-                    </span>
+                      {hoverRating || rating} {t(" out of 5 Stars")}</span>
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                    Your Name <span className="text-rose-500">*</span>
+                    {t("Your Name ")}<span className="text-rose-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -442,56 +402,54 @@ export default function ReviewSection({
                     maxLength={50}
                     value={authorName}
                     onChange={(e) => setAuthorName(e.target.value)}
-                    placeholder="e.g. Alex Carter"
+                    placeholder={t("e.g. Alex Carter")}
                     className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#FF2E54]"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                    Headline <span className="text-slate-400 font-normal">(Optional)</span>
+                    {t("Headline ")}<span className="text-slate-400 font-normal">{t("(Optional)")}</span>
                   </label>
                   <input
                     type="text"
                     maxLength={80}
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="e.g. Fast and preserved all table formatting!"
+                    placeholder={t("e.g. Fast and preserved all table formatting!")}
                     className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#FF2E54]"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                    Feedback <span className="text-slate-400 font-normal">(Optional)</span>
+                    {t("Feedback ")}<span className="text-slate-400 font-normal">{t("(Optional)")}</span>
                   </label>
                   <textarea
                     rows={3}
                     maxLength={1000}
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    placeholder="Share how this tool performed for your files..."
+                    placeholder={t("Share how this tool performed for your files...")}
                     className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#FF2E54] resize-none"
                   />
                   <div className="text-[10px] text-slate-400 text-right mt-1">
-                    {comment.length} / 1000 characters
-                  </div>
+                    {comment.length} {t(" / 1000 characters")}</div>
                 </div>
 
                 {errorMessage && (
-                  <p className="text-xs text-rose-500 font-semibold">{errorMessage}</p>
+                  <p className="text-xs text-rose-500 font-semibold">{t(errorMessage)}</p>
                 )}
 
                 <div className="flex items-center justify-between pt-2">
                   <p className="text-[10px] text-slate-400">
-                    🔒 Published directly to community feedback.
-                  </p>
+                    {t("🔒 Published directly to community feedback.")}</p>
                   <button
                     type="submit"
                     disabled={isSubmitting}
                     className="px-6 py-2.5 bg-[#FF2E54] hover:bg-[#E02447] text-white text-xs font-bold rounded-xl shadow-md transition-all disabled:opacity-50"
                   >
-                    {isSubmitting ? 'Submitting...' : 'Post Review'}
+                    {t(isSubmitting ? 'Submitting...' : 'Post Review')}
                   </button>
                 </div>
               </form>
@@ -512,8 +470,7 @@ export default function ReviewSection({
                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
                 }`}
               >
-                All
-              </button>
+                {t("All")}</button>
               {[5, 4, 3, 2, 1].map((s) => (
                 <button
                   key={s}
@@ -531,15 +488,15 @@ export default function ReviewSection({
             </div>
 
             <div className="flex items-center gap-2 text-xs">
-              <span className="text-slate-400">Sort:</span>
+              <span className="text-slate-400">{t("Sort:")}</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as 'newest' | 'highest' | 'lowest')}
                 className="bg-white dark:bg-darkBg-card border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#FF2E54]"
               >
-                <option value="newest">Most Relevant</option>
-                <option value="highest">Highest Rating</option>
-                <option value="lowest">Lowest Rating</option>
+                <option value="newest">{t("Most Relevant")}</option>
+                <option value="highest">{t("Highest Rating")}</option>
+                <option value="lowest">{t("Lowest Rating")}</option>
               </select>
             </div>
           </div>
@@ -553,8 +510,8 @@ export default function ReviewSection({
               <button
                 type="button"
                 onClick={(e) => scrollSlider('left', e)}
-                aria-label="Scroll reviews left"
-                title="Scroll reviews left (←)"
+                aria-label={t("Scroll reviews left")}
+                title={t("Scroll reviews left (←)")}
                 className="absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white dark:bg-[#111625] text-slate-800 dark:text-slate-100 border-2 border-slate-300 dark:border-slate-700 shadow-xl hover:border-[#FF2E54] hover:bg-[#FF2E54] hover:text-white dark:hover:bg-[#FF2E54] dark:hover:border-[#FF2E54] dark:hover:text-white transition-all flex items-center justify-center font-bold text-xl active:scale-90 focus:outline-none focus:ring-2 focus:ring-[#FF2E54]/50 cursor-pointer"
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -590,10 +547,11 @@ export default function ReviewSection({
                             {r.authorName}
                           </span>
                           <span className="text-[10px] text-slate-400">
-                            {new Date(r.createdAt).toLocaleDateString('en-US', {
+                            {new Date(r.createdAt).toLocaleDateString(locale, {
                               year: 'numeric',
                               month: 'short',
                               day: 'numeric',
+                              timeZone: 'UTC',
                             })}
                           </span>
                         </div>
@@ -602,7 +560,7 @@ export default function ReviewSection({
                       {/* Stars */}
                       <div className="flex items-center gap-0.5 text-amber-400 text-xs shrink-0">
                         {[1, 2, 3, 4, 5].map((s) => (
-                          <span key={s}>{s <= r.rating ? '★' : '☆'}</span>
+                          <span key={s}>{t(s <= r.rating ? '★' : '☆')}</span>
                         ))}
                       </div>
                     </div>
@@ -623,9 +581,9 @@ export default function ReviewSection({
                   {/* Card Bottom: Specific Tool Tag & Helpful Button */}
                   <div className="mt-4 pt-2.5 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400">
                     <span className="font-medium text-slate-500 dark:text-slate-400 truncate max-w-[190px]">
-                      {r.itemSlug === 'site'
+                      {t(r.itemSlug === 'site'
                         ? 'PDFConverter Suite'
-                        : TOOLS_REGISTRY[r.itemSlug]?.name || r.itemSlug}
+                        : TOOLS_REGISTRY[r.itemSlug]?.name || r.itemSlug)}
                     </span>
                     <button
                       type="button"
@@ -637,7 +595,7 @@ export default function ReviewSection({
                           : 'hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800'
                       }`}
                     >
-                      <span>👍 Helpful</span>
+                      <span>{t("👍 Helpful")}</span>
                       {(r.helpfulCount || 0) > 0 && <span>({r.helpfulCount})</span>}
                     </button>
                   </div>
@@ -650,8 +608,8 @@ export default function ReviewSection({
               <button
                 type="button"
                 onClick={(e) => scrollSlider('right', e)}
-                aria-label="Scroll reviews right"
-                title="Scroll reviews right (→)"
+                aria-label={t("Scroll reviews right")}
+                title={t("Scroll reviews right (→)")}
                 className="absolute -right-3 sm:-right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white dark:bg-[#111625] text-slate-800 dark:text-slate-100 border-2 border-slate-300 dark:border-slate-700 shadow-xl hover:border-[#FF2E54] hover:bg-[#FF2E54] hover:text-white dark:hover:bg-[#FF2E54] dark:hover:border-[#FF2E54] dark:hover:text-white transition-all flex items-center justify-center font-bold text-xl active:scale-90 focus:outline-none focus:ring-2 focus:ring-[#FF2E54]/50 cursor-pointer"
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -669,34 +627,31 @@ export default function ReviewSection({
                   className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111625] hover:border-[#FF2E54] hover:text-[#FF2E54] text-slate-700 dark:text-slate-300 transition-colors flex items-center gap-1.5 font-bold shadow-sm"
                 >
                   <span>←</span>
-                  <span>Previous</span>
+                  <span>{t("Previous")}</span>
                 </button>
                 <button
                   type="button"
                   onClick={(e) => scrollSlider('right', e)}
                   className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111625] hover:border-[#FF2E54] hover:text-[#FF2E54] text-slate-700 dark:text-slate-300 transition-colors flex items-center gap-1.5 font-bold shadow-sm"
                 >
-                  <span>Next</span>
+                  <span>{t("Next")}</span>
                   <span>→</span>
                 </button>
-                <span className="hidden sm:inline text-slate-400 ml-2">Use arrows (← →) or swipe to explore</span>
+                <span className="hidden sm:inline text-slate-400 ml-2">{t("Use arrows (← →) or swipe to explore")}</span>
               </div>
               <span className="font-mono text-slate-500 dark:text-slate-400 font-semibold">
-                {processedReviews.length} verified reviews
-              </span>
+                {processedReviews.length} {t(" verified reviews")}</span>
             </div>
           </div>
         ) : (
           reviews.length > 0 && (
             <div className="text-center py-8 text-xs text-slate-400">
-              No written reviews match the selected filter.
-              <button
+              {t("No written reviews match the selected filter.")}<button
                 type="button"
                 onClick={() => setStarFilter(null)}
                 className="text-[#FF2E54] font-bold ml-1.5 hover:underline"
               >
-                Show all reviews
-              </button>
+                {t("Show all reviews")}</button>
             </div>
           )
         )}

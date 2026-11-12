@@ -1,10 +1,16 @@
 // src/app/contact/ContactClient.tsx
 'use client';
+import { useTranslations, useLocalizedPath, useLocale } from '@/locales/LocaleProvider';
+
 
 import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function ContactClient() {
+  const locale = useLocale();
+  const t = useTranslations();
+  const linkTo = useLocalizedPath();
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -47,26 +53,23 @@ export default function ContactClient() {
       <div className="max-w-2xl mx-auto bg-white dark:bg-[#111625] rounded-3xl p-8 sm:p-12 border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-6">
         <div>
           <nav className="text-xs text-slate-400 mb-4">
-            <Link href="/" className="hover:underline">Home</Link> / <span>Contact Support</span>
+            <Link href={linkTo("/")} className="hover:underline">{t("Home")}</Link> / <span>{t("Contact Support")}</span>
           </nav>
           <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-            Contact Support &amp; Feedback
-          </h1>
+            {t("Contact Support & Feedback")}</h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            Have a question, feedback, or a document format request? Get in touch with our team.
-          </p>
+            {t("Have a question, feedback, or a document format request? Get in touch with our team.")}</p>
         </div>
 
         {submitted ? (
           <div className="p-6 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-2xl text-emerald-800 dark:text-emerald-300 text-sm">
-            <h3 className="font-bold text-base mb-1">Message Received!</h3>
-            <p>Thank you for reaching out. We have logged your feedback and will review it promptly.</p>
+            <h3 className="font-bold text-base mb-1">{t("Message Received!")}</h3>
+            <p>{t("Thank you for reaching out. We have logged your feedback and will review it promptly.")}</p>
             <button
               onClick={() => setSubmitted(false)}
               className="mt-4 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl"
             >
-              Send Another Message
-            </button>
+              {t("Send Another Message")}</button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -83,7 +86,7 @@ export default function ContactClient() {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                Your Name <span className="text-rose-500">*</span>
+                {t("Your Name ")}<span className="text-rose-500">*</span>
               </label>
               <input
                 type="text"
@@ -91,14 +94,14 @@ export default function ContactClient() {
                 maxLength={80}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Alex Carter"
+                placeholder={t("e.g. Alex Carter")}
                 className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#FF2E54]"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                Your Email <span className="text-rose-500">*</span>
+                {t("Your Email ")}<span className="text-rose-500">*</span>
               </label>
               <input
                 type="email"
@@ -106,14 +109,14 @@ export default function ContactClient() {
                 maxLength={100}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
+                placeholder={t("name@example.com")}
                 className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#FF2E54]"
               />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                Message or Tool Request <span className="text-rose-500">*</span>
+                {t("Message or Tool Request ")}<span className="text-rose-500">*</span>
               </label>
               <textarea
                 required
@@ -121,13 +124,13 @@ export default function ContactClient() {
                 maxLength={2000}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Describe your issue, feature request, or feedback..."
+                placeholder={t("Describe your issue, feature request, or feedback...")}
                 className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#FF2E54] resize-none"
               />
             </div>
 
             {errorMessage && (
-              <p className="text-xs text-rose-500 font-semibold">{errorMessage}</p>
+              <p className="text-xs text-rose-500 font-semibold">{t(errorMessage)}</p>
             )}
 
             <button
@@ -135,7 +138,7 @@ export default function ContactClient() {
               disabled={isSubmitting}
               className="w-full py-3 bg-[#FF2E54] hover:bg-[#E02447] text-white font-bold text-xs rounded-xl shadow-md transition-all disabled:opacity-50"
             >
-              {isSubmitting ? 'Sending Message...' : 'Send Message'}
+              {t(isSubmitting ? 'Sending Message...' : 'Send Message')}
             </button>
           </form>
         )}

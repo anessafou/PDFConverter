@@ -22,6 +22,10 @@ export default function AdminDashboardPage() {
       if (res.ok) {
         const data = await res.json();
         setReviews(data.reviews || []);
+      } else {
+        if (res.status === 401) { window.location.href = "/secretadmin2026here/login"; return; }
+        const data = await res.json();
+        setActionMessage(data.error || "Unable to load reviews.");
       }
     } catch (err) {
       console.error('Failed to load admin reviews:', err);
@@ -47,6 +51,9 @@ export default function AdminDashboardPage() {
         setActionMessage(`Review updated to ${status}.`);
         fetchAdminReviews();
         setTimeout(() => setActionMessage(null), 3000);
+      } else {
+        const data = await res.json();
+        setActionMessage(data.error || 'Review operation failed.');
       }
     } catch {
       setActionMessage('Failed to update status.');

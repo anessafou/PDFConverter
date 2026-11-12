@@ -28,6 +28,10 @@ export interface ValidationResult {
 }
 
 export function validateReviewSubmission(payload: ReviewSubmissionPayload): ValidationResult {
+  if (!payload || typeof payload !== 'object' || typeof payload.itemSlug !== 'string' || typeof payload.authorName !== 'string' ||
+      [payload.title, payload.comment, payload.honeypot].some(value => value !== undefined && typeof value !== 'string')) {
+    return { isValid: false, error: 'Invalid review fields.' };
+  }
   // 1. Invisible honeypot check
   if (payload.honeypot && payload.honeypot.trim().length > 0) {
     return { isValid: false, error: 'Spam validation check failed.' };
@@ -35,7 +39,7 @@ export function validateReviewSubmission(payload: ReviewSubmissionPayload): Vali
 
   // 2. Validate itemSlug against active tools registry
   const itemSlug = sanitizeText(payload.itemSlug || '');
-  if (itemSlug !== 'site' && !TOOLS_REGISTRY[itemSlug]) {
+  if (itemSlug !== 'site' && !Object.hasOwn(TOOLS_REGISTRY, itemSlug)) {
     return { isValid: false, error: 'Invalid document converter specified.' };
   }
 

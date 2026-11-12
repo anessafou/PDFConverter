@@ -1,5 +1,7 @@
 // src/components/reviews/HomeReviewCarousel.tsx
 'use client';
+import { useTranslations, useLocalizedPath, useLocale } from '@/locales/LocaleProvider';
+
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Review, AggregateRatingStats } from '@/core/reviews/reviews.interface';
@@ -43,6 +45,9 @@ export default function HomeReviewCarousel({
   initialStats = null,
   initialReviews = [],
 }: HomeReviewCarouselProps) {
+  const locale = useLocale();
+  const t = useTranslations();
+
   const [reviews, setReviews] = useState<Review[]>(initialReviews);
   const [stats, setStats] = useState<AggregateRatingStats | null>(initialStats);
   const [isLoading, setIsLoading] = useState(initialReviews.length === 0 && !initialStats);
@@ -266,14 +271,11 @@ export default function HomeReviewCarousel({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 rounded-full text-xs font-bold border border-rose-200 dark:border-rose-900/40 mb-2">
-            ★ Real User Experiences
-          </div>
+            {t("★ Real User Experiences")}</div>
           <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-            User Reviews & Ratings
-          </h2>
+            {t("User Reviews & Ratings")}</h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Read what professionals, students, and businesses say about PDFConverter.
-          </p>
+            {t("Read what professionals, students, and businesses say about PDFConverter.")}</p>
         </div>
 
         {!showForm && (
@@ -286,7 +288,7 @@ export default function HomeReviewCarousel({
             className="px-5 py-2.5 bg-[#FF2E54] hover:bg-[#E02447] text-white text-xs font-bold rounded-full shadow-md shadow-rose-500/25 transition-all self-start sm:self-auto flex items-center gap-1.5 hover:scale-105"
           >
             <span>★</span>
-            <span>Write a Review</span>
+            <span>{t("Write a Review")}</span>
           </button>
         )}
       </div>
@@ -296,20 +298,19 @@ export default function HomeReviewCarousel({
         <div className="bg-slate-50 dark:bg-[#111625] rounded-3xl p-6 sm:p-8 border border-slate-200/90 dark:border-slate-800/80 shadow-sm mb-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           <div className="text-center md:border-r border-slate-200 dark:border-slate-800 md:pr-8">
             <div className="text-5xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tight">
-              {stats.ratingValue.toFixed(1)}
+              {t(stats.ratingValue.toFixed(1))}
             </div>
             <div className="flex justify-center gap-1 my-2 text-amber-400 text-xl">
               {[1, 2, 3, 4, 5].map((star) => (
-                <span key={star}>{star <= Math.round(stats.ratingValue) ? '★' : '☆'}</span>
+                <span key={star}>{t(star <= Math.round(stats.ratingValue) ? '★' : '☆')}</span>
               ))}
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Based on{' '}
+              {t("Based on")}{t(' ')}
               <span className="font-bold text-slate-800 dark:text-slate-200">
-                {stats.reviewCount.toLocaleString()}
-              </span>{' '}
-              genuine user reviews
-            </p>
+                {t(stats.reviewCount.toLocaleString())}
+              </span>{t(' ')}
+              {t("genuine user reviews")}</p>
           </div>
 
           <div className="md:col-span-2 space-y-2 text-xs">
@@ -319,8 +320,7 @@ export default function HomeReviewCarousel({
               return (
                 <div key={stars} className="flex items-center gap-3">
                   <span className="w-14 font-bold text-slate-600 dark:text-slate-400">
-                    {stars} stars
-                  </span>
+                    {stars} {t(" stars")}</span>
                   <div className="flex-1 bg-slate-200 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
                     <div
                       className="bg-amber-400 h-full rounded-full transition-all duration-500"
@@ -328,7 +328,7 @@ export default function HomeReviewCarousel({
                     />
                   </div>
                   <span className="w-12 text-right font-mono text-slate-500 dark:text-slate-400">
-                    {count.toLocaleString()}
+                    {t(count.toLocaleString())}
                   </span>
                 </div>
               );
@@ -342,19 +342,17 @@ export default function HomeReviewCarousel({
         <div className="bg-white dark:bg-[#111625] rounded-3xl p-6 sm:p-8 border border-rose-200/80 dark:border-rose-900/40 shadow-xl mb-12 transition-all">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-base font-bold text-slate-900 dark:text-white">
-              Write a Review for PDFConverter
-            </h3>
+              {t("Write a Review for PDFConverter")}</h3>
             <button
               onClick={() => setShowForm(false)}
               className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
             >
-              Cancel
-            </button>
+              {t("Cancel")}</button>
           </div>
 
           {submitSuccess ? (
             <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
-              ✓ {submitSuccess}
+              ✓ {t(submitSuccess)}
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -371,7 +369,7 @@ export default function HomeReviewCarousel({
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Your Rating <span className="text-rose-500">*</span>
+                  {t("Your Rating ")}<span className="text-rose-500">*</span>
                 </label>
                 <div className="flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -382,20 +380,19 @@ export default function HomeReviewCarousel({
                       onMouseEnter={() => setHoverRating(star)}
                       onMouseLeave={() => setHoverRating(0)}
                       className="text-3xl text-amber-400 focus:outline-none transition-transform hover:scale-110"
-                      aria-label={`Rate ${star} stars`}
+                      aria-label={t(`Rate ${star} stars`)}
                     >
-                      {star <= (hoverRating || rating) ? '★' : '☆'}
+                      {t(star <= (hoverRating || rating) ? '★' : '☆')}
                     </button>
                   ))}
                   <span className="text-xs font-bold text-slate-600 dark:text-slate-400 ml-3">
-                    {hoverRating || rating} out of 5 Stars
-                  </span>
+                    {hoverRating || rating} {t(" out of 5 Stars")}</span>
                 </div>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Your Name <span className="text-rose-500">*</span>
+                  {t("Your Name ")}<span className="text-rose-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -403,51 +400,50 @@ export default function HomeReviewCarousel({
                   maxLength={50}
                   value={authorName}
                   onChange={(e) => setAuthorName(e.target.value)}
-                  placeholder="e.g. Sarah Jenkins"
+                  placeholder={t("e.g. Sarah Jenkins")}
                   className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#FF2E54]"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Headline <span className="text-slate-400 font-normal">(Optional)</span>
+                  {t("Headline ")}<span className="text-slate-400 font-normal">{t("(Optional)")}</span>
                 </label>
                 <input
                   type="text"
                   maxLength={80}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="e.g. Converted my thesis without losing table formats!"
+                  placeholder={t("e.g. Converted my thesis without losing table formats!")}
                   className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#FF2E54]"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
-                  Feedback <span className="text-slate-400 font-normal">(Detailed experiences help others)</span>
+                  {t("Feedback ")}<span className="text-slate-400 font-normal">{t("(Detailed experiences help others)")}</span>
                 </label>
                 <textarea
                   rows={3}
                   maxLength={1000}
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="Tell us what file format you converted and how the layout turned out..."
+                  placeholder={t("Tell us what file format you converted and how the layout turned out...")}
                   className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#FF2E54] resize-none"
                 />
               </div>
 
-              {errorMessage && <p className="text-xs text-rose-500 font-semibold">{errorMessage}</p>}
+              {errorMessage && <p className="text-xs text-rose-500 font-semibold">{t(errorMessage)}</p>}
 
               <div className="flex items-center justify-between pt-2">
                 <p className="text-[10px] text-slate-400">
-                  🔒 Published directly to genuine community feedback.
-                </p>
+                  {t("🔒 Published directly to genuine community feedback.")}</p>
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className="px-6 py-2.5 bg-[#FF2E54] hover:bg-[#E02447] text-white text-xs font-bold rounded-xl shadow-md transition-all disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Submitting...' : 'Post Review'}
+                  {t(isSubmitting ? 'Submitting...' : 'Post Review')}
                 </button>
               </div>
             </form>
@@ -459,7 +455,7 @@ export default function HomeReviewCarousel({
       <div className="flex items-center justify-between mb-6">
         <div>
           <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            Featured Feedback ({displayReviews.length})
+            {t("Featured Feedback (")}{displayReviews.length})
           </span>
         </div>
 
@@ -469,7 +465,7 @@ export default function HomeReviewCarousel({
             onClick={handlePrev}
             disabled={currentIndex === 0}
             className="w-10 h-10 rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111625] text-slate-700 dark:text-slate-200 hover:border-[#FF2E54] dark:hover:border-[#FF2E54] hover:text-[#FF2E54] flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm active:scale-95"
-            aria-label="Previous review cards"
+            aria-label={t("Previous review cards")}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
@@ -479,7 +475,7 @@ export default function HomeReviewCarousel({
             onClick={handleNext}
             disabled={currentIndex >= maxIndex}
             className="w-10 h-10 rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111625] text-slate-700 dark:text-slate-200 hover:border-[#FF2E54] dark:hover:border-[#FF2E54] hover:text-[#FF2E54] flex items-center justify-center transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm active:scale-95"
-            aria-label="Next review cards"
+            aria-label={t("Next review cards")}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
@@ -525,11 +521,11 @@ export default function HomeReviewCarousel({
                             {r.authorName}
                           </span>
                           <span className="text-[10px] text-slate-400 font-mono">
-                            {new Date(r.createdAt).toLocaleDateString('en-US', {
+                            {t(new Date(r.createdAt).toLocaleDateString('en-US', {
                               year: 'numeric',
                               month: 'short',
                               day: 'numeric',
-                            })}
+                            }))}
                           </span>
                         </div>
                       </div>
@@ -537,7 +533,7 @@ export default function HomeReviewCarousel({
                       {/* 5 Amber Stars */}
                       <div className="flex items-center gap-0.5 text-amber-400 text-sm">
                         {[1, 2, 3, 4, 5].map((s) => (
-                          <span key={s}>{s <= r.rating ? '★' : '☆'}</span>
+                          <span key={s}>{t(s <= r.rating ? '★' : '☆')}</span>
                         ))}
                       </div>
                     </div>
@@ -558,7 +554,7 @@ export default function HomeReviewCarousel({
                   {/* Card Footer: Tool Tag & Helpful Vote */}
                   <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
                     <span className="inline-flex items-center gap-1 font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 px-2 py-0.5 rounded-full text-[10px]">
-                      {toolBadgeName}
+                      {t(toolBadgeName)}
                     </span>
 
                     <button
@@ -570,7 +566,7 @@ export default function HomeReviewCarousel({
                           : 'hover:text-slate-700 dark:hover:text-slate-200'
                       }`}
                     >
-                      <span>👍 Helpful</span>
+                      <span>{t("👍 Helpful")}</span>
                       {(r.helpfulCount || 0) > 0 && <span>({r.helpfulCount})</span>}
                     </button>
                   </div>
@@ -593,7 +589,7 @@ export default function HomeReviewCarousel({
                   ? 'w-6 bg-[#FF2E54]'
                   : 'w-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300'
               }`}
-              aria-label={`Jump to review slide ${idx + 1}`}
+              aria-label={t(`Jump to review slide ${idx + 1}`)}
             />
           ))}
         </div>

@@ -1,71 +1,44 @@
-// src/app/api/admin/reviews/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { reviewsRepository } from '@/core/reviews/reviews-repository';
 import { authService } from '@/core/auth/postgres-adapter';
-import { ReviewStatus } from '@/core/reviews/reviews.interface';
+import type { ReviewStatus } from '@/core/reviews/reviews.interface';
 
-async function authenticateAdmin(req: NextRequest): Promise<boolean> {
+const statuses = ['pending', 'published', 'rejected'];
+async function authorized(req: NextRequest) {
   const token = req.cookies.get('admin_session')?.value;
-  if (!token) return false;
-  const user = await authService.validateSession(token);
-  return user !== null && (user.role === 'superadmin' || user.role === 'editor');
+  const user = token ? await authService.validateSession(token) : null;
+  return user && ['superadmin', 'editor'].includes(user.role);
 }
+const unavailable = () => NextResponse.json({ error: 'Review storage is unavailable. Please try again.' }, { status: 503 });
 
 export async function GET(req: NextRequest) {
-  if (!(await authenticateAdmin(req))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const { searchParams } = new URL(req.url);
-  const status = searchParams.get('status') as ReviewStatus | undefined;
-
-  const reviews = await reviewsRepository.getAllReviewsForAdmin(status);
-  return NextResponse.json({ reviews });
-}
-
-export async function PATCH(req: NextRequest) {
-  if (!(await authenticateAdmin(req))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
-    const { id, status } = await req.json();
-    if (!id || !['pending', 'published', 'rejected'].includes(status)) {
-      return NextResponse.json({ error: 'Invalid status value.' }, { status: 400 });
-    }
-
-    const updated = await reviewsRepository.updateReviewStatus(id, status as ReviewStatus);
-    if (!updated) {
-      return NextResponse.json({ error: 'Review not found.' }, { status: 404 });
-    }
-
-    // Invalidate stale caches immediately upon review status change
-    revalidatePath(`/${updated.itemSlug}`);
-
-    return NextResponse.json({ review: updated });
-  } catch (error) {
-    console.error('Admin review update error:', error);
-    return NextResponse.json({ error: 'Review status update failed.' }, { status: 500 });
-  }
+    if (!await authorized(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const status = req.nextUrl.searchParams.get('status');
+    if (status && !statuses.includes(status)) return NextResponse.json({ error: 'Invalid status.' }, { status: 400 });
+    const reviews = await reviewsRepository.getAllReviewsForAdmin((status || undefined) as ReviewStatus | undefined);
+    return NextResponse.json({ reviews }, { headers: { 'Cache-Control': 'no-store' } });
+  } catch (error) { console.error('Admin review read failed:', error); return unavailable(); }
 }
-
+export async function PATCH(req: NextRequest) {
+  try {
+    if (!await authorized(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const { id, status } = await req.json();
+    if (typeof id !== 'string' || !id || !statuses.includes(status)) return NextResponse.json({ error: 'Invalid review ID or status.' }, { status: 400 });
+    const review = await reviewsRepository.updateReviewStatus(id, status as ReviewStatus);
+    if (!review) return NextResponse.json({ error: 'Review not found.' }, { status: 404 });
+    revalidatePath('/', 'layout');
+    return NextResponse.json({ review });
+  } catch (error) { console.error('Review moderation failed:', error); return unavailable(); }
+}
 export async function DELETE(req: NextRequest) {
-  if (!(await authenticateAdmin(req))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const { searchParams } = new URL(req.url);
-  const id = searchParams.get('id');
-
-  if (!id) {
-    return NextResponse.json({ error: 'Review ID required.' }, { status: 400 });
-  }
-
-  const success = await reviewsRepository.deleteReview(id);
-  if (!success) {
-    return NextResponse.json({ error: 'Review not found.' }, { status: 404 });
-  }
-
-  return NextResponse.json({ success: true });
+  try {
+    if (!await authorized(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const id = req.nextUrl.searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Review ID required.' }, { status: 400 });
+    if (!await reviewsRepository.deleteReview(id)) return NextResponse.json({ error: 'Review not found.' }, { status: 404 });
+    revalidatePath('/', 'layout');
+    return NextResponse.json({ success: true });
+  } catch (error) { console.error('Review deletion failed:', error); return unavailable(); }
 }

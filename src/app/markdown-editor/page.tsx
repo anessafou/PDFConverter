@@ -1,60 +1,42 @@
+import Breadcrumbs, { toolTrail } from '@/components/Breadcrumbs';
+import { TOOLS_REGISTRY } from '@/config/tools-registry';
+import { pageMetadata } from '@/config/page-metadata';
+import { generateHreflangAlternates } from '@/config/i18n-registry';
+
+import { requestLocale } from '@/locales/server';
+import { translate } from '@/locales/translate';
+export const dynamic = 'force-dynamic';
 // src/app/markdown-editor/page.tsx
 import { Metadata } from 'next';
 import MarkdownEditorClient from './MarkdownEditorClient';
-import { reviewsRepository } from '@/core/reviews/reviews-repository';
+import { getPublicReviewData } from '@/core/reviews/public-review-data';
 import ReviewSchema from '@/components/reviews/ReviewSchema';
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: 'Live Markdown Editor - Free Online Editor & Preview | PDFConverter',
-  description: 'Edit, format, and preview Markdown notes in real time directly in your browser. Live split-screen preview and one-click .md export with zero sign-up.',
-  alternates: {
-    canonical: 'https://www.pdfconverter.space/markdown-editor',
-  },
-};
+const languages = generateHreflangAlternates('markdown-editor').languages;
+export const metadata: Metadata = pageMetadata('en',
+  'Live Markdown Editor - Free Online Editor & Preview | PDFConverter',
+  'Edit Markdown text in your browser, view it alongside the editor, and download an .md file.',
+  languages.en, languages,
+);
 
 export default async function MarkdownEditorPage() {
-  const [stats, reviews] = await Promise.all([
-    reviewsRepository.getAggregateStats('markdown-editor'),
-    reviewsRepository.getPublishedReviews('markdown-editor', { limit: 20 }),
-  ]);
+  const locale = await requestLocale();
+  const t = (value: string) => translate(locale, value);
 
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://www.pdfconverter.space',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Markdown Editor',
-        item: 'https://www.pdfconverter.space/markdown-editor',
-      },
-    ],
-  };
-
-  const safeBreadcrumbJson = JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c');
+  const { stats, reviews } = await getPublicReviewData('markdown-editor');
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: safeBreadcrumbJson }}
-      />
       <ReviewSchema
-        toolName="Markdown Editor"
-        toolDescription="Interactive browser-based live Markdown editor and previewer with real-time split screen."
+        toolName={t("Markdown Editor")}
+        toolDescription={t("Interactive browser-based live Markdown editor and previewer with real-time split screen.")}
         toolSlug="markdown-editor"
         stats={stats}
         reviews={reviews}
       />
-      <MarkdownEditorClient initialStats={stats} initialReviews={reviews} />
+      <MarkdownEditorClient initialStats={stats} initialReviews={reviews} breadcrumb={<Breadcrumbs locale={locale} centered trail={toolTrail(locale, TOOLS_REGISTRY['markdown-editor'])} />} />
     </>
   );
 }
