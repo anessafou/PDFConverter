@@ -74,7 +74,7 @@ export default async function Image() {
             lineHeight: 1.4,
           }}
         >
-          Convert, Merge, Compress & Edit Documents Online • 100% Free & Private
+          PDF • DOCX • XLSX • JPG • PNG
         </p>
 
         <div

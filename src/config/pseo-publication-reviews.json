@@ -1,0 +1,135 @@
+[
+  {
+    "path": "/p/image-converter-images-to-ico",
+    "locale": "en",
+    "toolSlug": "image-converter",
+    "task": "images-to-ico",
+    "contentStatus": "reviewed",
+    "contentSha256": "ae8fdd2f58dc87711505cf3ec0a06fa2a6dbfd0bfc760267c8fbc38dc6e48091",
+    "approval": "approved-local-english-expansion-2026-11-10",
+    "evidence": [
+      "src/app/image-converter/ImageConverterClient.tsx: existing queue and output branches",
+      "tests/browser/english-pseo.spec.ts: actual output signatures, pixels, dimensions and ZIP checks; comparison content reviewed"
+    ],
+    "implementationFiles": [
+      {
+        "file": "src/app/image-converter/ImageConverterClient.tsx",
+        "sha256": "02a44782e956ddbeb74d5164a040b7a20d692b90bc6549f489134212a79ab398"
+      }
+    ]
+  },
+  {
+    "path": "/p/image-converter-images-to-bmp",
+    "locale": "en",
+    "toolSlug": "image-converter",
+    "task": "images-to-bmp",
+    "contentStatus": "reviewed",
+    "contentSha256": "a4abfc095f449ca3efed6d9bbd8683467d0a2a2898ab1c99a5f145ce5d13580f",
+    "approval": "approved-local-english-expansion-2026-11-10",
+    "evidence": [
+      "src/app/image-converter/ImageConverterClient.tsx: existing queue and output branches",
+      "tests/browser/english-pseo.spec.ts: actual output signatures, pixels, dimensions and ZIP checks; comparison content reviewed"
+    ],
+    "implementationFiles": [
+      {
+        "file": "src/app/image-converter/ImageConverterClient.tsx",
+        "sha256": "02a44782e956ddbeb74d5164a040b7a20d692b90bc6549f489134212a79ab398"
+      }
+    ]
+  },
+  {
+    "path": "/p/image-converter-bmp-to-png",
+    "locale": "en",
+    "toolSlug": "image-converter",
+    "task": "bmp-to-png",
+    "contentStatus": "reviewed",
+    "contentSha256": "aa3f3df43f64f28991527e33b1dc7ba69e0b1ddabd3ce3edd434f5fd1d2397e2",
+    "approval": "approved-local-english-expansion-2026-11-10",
+    "evidence": [
+      "src/app/image-converter/ImageConverterClient.tsx: existing queue and output branches",
+      "tests/browser/english-pseo.spec.ts: actual output signatures, pixels, dimensions and ZIP checks; comparison content reviewed"
+    ],
+    "implementationFiles": [
+      {
+        "file": "src/app/image-converter/ImageConverterClient.tsx",
+        "sha256": "02a44782e956ddbeb74d5164a040b7a20d692b90bc6549f489134212a79ab398"
+      }
+    ]
+  },
+  {
+    "path": "/p/image-converter-svg-to-webp",
+    "locale": "en",
+    "toolSlug": "image-converter",
+    "task": "svg-to-webp",
+    "contentStatus": "reviewed",
+    "contentSha256": "9768a0f313d8863ad21b1175548a57abbe9e228dd8dd4a42c83ccb1159aec79e",
+    "approval": "approved-local-english-expansion-2026-11-10",
+    "evidence": [
+      "src/app/image-converter/ImageConverterClient.tsx: existing queue and output branches",
+      "tests/browser/english-pseo.spec.ts: actual output signatures, pixels, dimensions and ZIP checks; comparison content reviewed"
+    ],
+    "implementationFiles": [
+      {
+        "file": "src/app/image-converter/ImageConverterClient.tsx",
+        "sha256": "02a44782e956ddbeb74d5164a040b7a20d692b90bc6549f489134212a79ab398"
+      }
+    ]
+  },
+  {
+    "path": "/p/image-converter-batch-webp-conversion",
+    "locale": "en",
+    "toolSlug": "image-converter",
+    "task": "batch-webp-conversion",
+    "contentStatus": "reviewed",
+    "contentSha256": "16a3bc1ef21fa8bbc2f639f30de912577014fd6b543e015451a9f52a303b9920",
+    "approval": "approved-local-english-expansion-2026-11-10",
+    "evidence": [
+      "src/app/image-converter/ImageConverterClient.tsx: existing queue and output branches",
+      "tests/browser/english-pseo.spec.ts: actual output signatures, pixels, dimensions and ZIP checks; comparison content reviewed"
+    ],
+    "implementationFiles": [
+      {
+        "file": "src/app/image-converter/ImageConverterClient.tsx",
+        "sha256": "02a44782e956ddbeb74d5164a040b7a20d692b90bc6549f489134212a79ab398"
+      }
+    ]
+  },
+  {
+    "path": "/p/image-converter-image-format-comparison",
+    "locale": "en",
+    "toolSlug": "image-converter",
+    "task": "image-format-comparison",
+    "contentStatus": "reviewed",
+    "contentSha256": "0b1e2899fffa2609e53979682135a201ff67c3789198a720dbd04e257c908aa9",
+    "approval": "approved-local-english-expansion-2026-11-10",
+    "evidence": [
+      "src/app/image-converter/ImageConverterClient.tsx: existing queue and output branches",
+      "tests/browser/english-pseo.spec.ts: actual output signatures, pixels, dimensions and ZIP checks; comparison content reviewed"
+    ],
+    "implementationFiles": [
+      {
+        "file": "src/app/image-converter/ImageConverterClient.tsx",
+        "sha256": "02a44782e956ddbeb74d5164a040b7a20d692b90bc6549f489134212a79ab398"
+      }
+    ]
+  },
+  {
+    "path": "/p/rotate-pdf-save-rotation",
+    "locale": "en",
+    "toolSlug": "rotate-pdf",
+    "task": "save-rotation",
+    "contentStatus": "reviewed",
+    "contentSha256": "76763e9e550dfa40b6ac9ce6bf4c39903edc3a2fb2358d46662d3e7945ad2979",
+    "approval": "approved-local-english-expansion-2026-11-10",
+    "evidence": [
+      "src/core/converter-engine.ts: rotate-pdf adds 90 degrees to every page",
+      "tests/browser/english-pseo.spec.ts: downloaded PDF rotations checked"
+    ],
+    "implementationFiles": [
+      {
+        "file": "src/core/converter-engine.ts",
+        "sha256": "a7aa204d30910bc0aa7c765ec64c9335925475026fbb7e69b220f9a36b227425"
+      }
+    ]
+  }
+]

@@ -1,6 +1,12 @@
+import { requestLocale } from '@/locales/server';
+import { localizePath } from '@/locales/routing';
+import { translate } from '@/locales/translate';
 // src/components/reviews/ReviewSchema.tsx
 import React from 'react';
 import { AggregateRatingStats, Review } from '@/core/reviews/reviews.interface';
+import JsonLd from '@/components/JsonLd';
+import { writtenReviews } from '@/core/reviews/written-reviews';
+import type { Locale } from '@/config/i18n-registry';
 
 interface ReviewSchemaProps {
   toolName: string;
@@ -10,17 +16,14 @@ interface ReviewSchemaProps {
   reviews?: Review[];
 }
 
-export default function ReviewSchema({
+export function buildReviewSchema(locale: Locale, {
   toolName,
   toolDescription,
   toolSlug,
   stats,
   reviews = [],
 }: ReviewSchemaProps) {
-  const canonicalUrl =
-    !toolSlug || toolSlug === 'site'
-      ? 'https://www.pdfconverter.space'
-      : `https://www.pdfconverter.space/${toolSlug}`;
+  const canonicalUrl = 'https://www.pdfconverter.space' + localizePath(!toolSlug || toolSlug === 'site' ? '/' : '/' + toolSlug, locale);
 
   // Base SoftwareApplication schema
   const schema: Record<string, unknown> = {
@@ -28,11 +31,11 @@ export default function ReviewSchema({
     '@type': 'WebApplication',
     '@id': `${canonicalUrl}#software`,
     name: `${toolName} - PDFConverter`,
-    description: toolDescription,
+    description: translate(locale, toolDescription),
+    inLanguage: locale,
     url: canonicalUrl,
     applicationCategory: 'BusinessApplication',
-    operatingSystem: 'All',
-    browserRequirements: 'Requires modern web browser with HTML5 support',
+    browserRequirements: translate(locale, 'Requires modern web browser with HTML5 support'),
     offers: {
       '@type': 'Offer',
       price: '0',
@@ -41,7 +44,15 @@ export default function ReviewSchema({
   };
 
   // Only emit AggregateRating if genuine user reviews exist in the database
-  if (stats && stats.reviewCount > 0) {
+  const distribution = stats?.distribution;
+  const distributionIsValid = Boolean(distribution &&
+    [distribution[1], distribution[2], distribution[3], distribution[4], distribution[5]]
+      .every(count => Number.isInteger(count) && count >= 0) &&
+    [distribution[1], distribution[2], distribution[3], distribution[4], distribution[5]]
+      .reduce((sum, count) => sum + count, 0) === stats?.reviewCount);
+  if (stats?.itemSlug === toolSlug && Number.isInteger(stats.ratingCount) && stats.ratingCount > 0 &&
+      Number.isInteger(stats.reviewCount) && stats.reviewCount > 0 &&
+      stats.ratingValue >= 1 && stats.ratingValue <= 5 && distributionIsValid) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: stats.ratingValue.toFixed(1),
@@ -51,7 +62,12 @@ export default function ReviewSchema({
       worstRating: '1',
     };
 
-    const validComments = reviews.filter((r) => r.comment && r.comment.trim().length > 0);
+    const validComments = writtenReviews(reviews).filter(review =>
+      review.status === 'published' && review.itemSlug === toolSlug &&
+      review.comment?.trim() && review.authorName.trim() &&
+      Number.isInteger(review.rating) && review.rating >= 1 && review.rating <= 5 &&
+      Number.isFinite(Date.parse(review.createdAt)),
+    );
     if (validComments.length > 0) {
       schema.review = validComments.slice(0, 5).map((r) => ({
         '@type': 'Review',
@@ -71,12 +87,9 @@ export default function ReviewSchema({
     }
   }
 
-  const safeJson = JSON.stringify(schema).replace(/</g, '\\u003c');
+  return schema;
+}
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: safeJson }}
-    />
-  );
+export default async function ReviewSchema(props: ReviewSchemaProps) {
+  return <JsonLd data={buildReviewSchema(await requestLocale(), props)} />;
 }

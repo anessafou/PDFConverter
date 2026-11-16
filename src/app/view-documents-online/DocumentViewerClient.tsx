@@ -1,5 +1,7 @@
 // src/app/view-documents-online/DocumentViewerClient.tsx
 'use client';
+import { useTranslations, useLocalizedPath, useLocale } from '@/locales/LocaleProvider';
+
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
@@ -80,12 +82,20 @@ interface PdfPageProxy {
 interface DocumentViewerClientProps {
   initialStats?: AggregateRatingStats | null;
   initialReviews?: Review[];
+  breadcrumb?: React.ReactNode;
+  guideLinks?: React.ReactNode;
 }
 
 export default function DocumentViewerClient({
   initialStats = null,
   initialReviews = [],
+  breadcrumb,
+  guideLinks,
 }: DocumentViewerClientProps) {
+  const locale = useLocale();
+  const t = useTranslations();
+  const linkTo = useLocalizedPath();
+
   const [doc, setDoc] = useState<LoadedDocument | null>(null);
   const [zoom, setZoom] = useState<number>(100);
   const [rotation, setRotation] = useState<number>(0);
@@ -420,12 +430,13 @@ export default function DocumentViewerClient({
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-darkBg text-slate-800 dark:text-slate-100 flex flex-col transition-colors">
+      {!doc && breadcrumb && <div className="px-4 pt-4">{breadcrumb}</div>}
       <header className="sticky top-20 z-40 bg-white/95 dark:bg-darkBg-card/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 shadow-sm">
         <div className="flex items-center gap-3 min-w-0">
           <Link
-            href="/"
+            href={linkTo("/")}
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            title="Back to home"
+            title={t("Back to home")}
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -438,13 +449,13 @@ export default function DocumentViewerClient({
                 {doc.name}
               </h1>
               <div className="flex items-center gap-2 text-[11px] text-slate-400">
-                <span>{(doc.size / 1024 / 1024).toFixed(2)} MB</span>
+                <span>{(doc.size / 1024 / 1024).toFixed(2)} {t(" MB")}</span>
                 <span>•</span>
                 <span className="uppercase font-semibold text-rose-500">{doc.extension}</span>
                 {pdfPageCount > 0 && (
                   <>
                     <span>•</span>
-                    <span>{pdfPageCount} {pdfPageCount === 1 ? 'Page' : 'Pages'}</span>
+                    <span>{pdfPageCount} {t(pdfPageCount === 1 ? 'Page' : 'Pages')}</span>
                   </>
                 )}
               </div>
@@ -452,11 +463,9 @@ export default function DocumentViewerClient({
           ) : (
             <div>
               <h1 className="text-sm font-bold text-slate-900 dark:text-white">
-                View Documents Online
-              </h1>
+                {t("View Documents Online")}</h1>
               <p className="text-[11px] text-slate-400">
-                Direct in-browser viewer without conversion or downloads
-              </p>
+                {t("Direct in-browser viewer without conversion or downloads")}</p>
             </div>
           )}
         </div>
@@ -468,7 +477,7 @@ export default function DocumentViewerClient({
                 type="button"
                 onClick={() => setZoom((prev) => Math.max(prev - 15, 40))}
                 className="p-1.5 rounded hover:bg-white dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors"
-                title="Zoom Out"
+                title={t("Zoom Out")}
               >
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
@@ -478,7 +487,7 @@ export default function DocumentViewerClient({
                 type="button"
                 onClick={() => setZoom(100)}
                 className="text-xs font-mono font-bold px-2 text-slate-700 dark:text-slate-300 hover:text-rose-500 transition-colors"
-                title="Reset zoom to 100%"
+                title={t("Reset zoom to 100%")}
               >
                 {zoom}%
               </button>
@@ -486,7 +495,7 @@ export default function DocumentViewerClient({
                 type="button"
                 onClick={() => setZoom((prev) => Math.min(prev + 15, 200))}
                 className="p-1.5 rounded hover:bg-white dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors"
-                title="Zoom In"
+                title={t("Zoom In")}
               >
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -499,7 +508,7 @@ export default function DocumentViewerClient({
                 type="button"
                 onClick={() => setRotation((prev) => (prev + 90) % 360)}
                 className="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition-colors"
-                title="Rotate 90 degrees"
+                title={t("Rotate 90 degrees")}
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -511,7 +520,7 @@ export default function DocumentViewerClient({
               type="button"
               onClick={() => window.print()}
               className="p-2 rounded-lg bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-800 transition-colors"
-              title="Print document"
+              title={t("Print document")}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -524,7 +533,7 @@ export default function DocumentViewerClient({
               className="px-4 py-2 bg-[#FF2E54] hover:bg-[#E02447] text-white text-xs font-bold rounded-lg shadow-sm transition-all flex items-center gap-1.5"
             >
               <span>+</span>
-              <span>Open New File</span>
+              <span>{t("Open New File")}</span>
             </button>
           </div>
         )}
@@ -537,7 +546,7 @@ export default function DocumentViewerClient({
         {isLoading && (
           <div className="absolute top-2 left-1/2 -translate-x-1/2 z-50 bg-white/90 dark:bg-darkBg-card/90 backdrop-blur border border-rose-200 dark:border-rose-900/50 shadow-lg px-4 py-2 rounded-full flex items-center gap-2.5">
             <div className="w-3.5 h-3.5 border-2 border-rose-300 border-t-[#FF2E54] rounded-full animate-spin" />
-            <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{statusMessage}</span>
+            <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{t(statusMessage)}</span>
           </div>
         )}
 
@@ -545,9 +554,9 @@ export default function DocumentViewerClient({
           <div className="w-full max-w-xl mx-auto my-6 p-4 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 text-xs shadow-sm">
             <p className="font-bold flex items-center gap-1.5">
               <span>⚠️</span>
-              <span>Document Preview Notice</span>
+              <span>{t("Document Preview Notice")}</span>
             </p>
-            <p className="mt-1 leading-relaxed">{renderError}</p>
+            <p className="mt-1 leading-relaxed">{t(renderError)}</p>
           </div>
         )}
 
@@ -555,11 +564,10 @@ export default function DocumentViewerClient({
           <div className="w-full max-w-2xl text-center space-y-6 my-auto py-12">
             <div className="space-y-2">
               <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-                View Documents <span className="text-[#FF2E54]">Directly</span>
+                {t("View Documents ")}<span className="text-[#FF2E54]">{t("Directly")}</span>
               </h2>
               <p className="text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-                Open and read DOCX, PDF, XLSX, PPTX, CSV, and text files directly in your browser without converting or installing software.
-              </p>
+                {t("Open and read DOCX, PDF, XLSX, PPTX, CSV, and text files directly in your browser without converting or installing software.")}</p>
             </div>
 
             <input
@@ -583,25 +591,22 @@ export default function DocumentViewerClient({
               </div>
 
               <p className="text-base font-bold text-slate-800 dark:text-white">
-                Drag & drop your document here
-              </p>
+                {t("Drag & drop your document here")}</p>
               <p className="text-xs text-slate-400 mt-1 mb-5">
-                or click to browse your computer or mobile files
-              </p>
+                {t("or click to browse your computer or mobile files")}</p>
 
               <button
                 type="button"
                 className="px-6 py-2.5 bg-[#FF2E54] hover:bg-[#E02447] text-white font-bold text-xs rounded-full shadow-md shadow-rose-500/25 transition-all"
               >
-                Choose Document to Preview
-              </button>
+                {t("Choose Document to Preview")}</button>
 
               <div className="flex flex-wrap items-center justify-center gap-2 mt-8 pt-6 border-t border-slate-100 dark:border-slate-800/80 text-[11px] font-bold text-slate-400">
-                <span className="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">Word (.DOCX)</span>
-                <span className="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">PDF (.PDF)</span>
-                <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">Excel (.XLSX)</span>
-                <span className="px-2 py-0.5 rounded bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400">PowerPoint (.PPTX)</span>
-                <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Images & Code</span>
+                <span className="px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">{t("Word (.DOCX)")}</span>
+                <span className="px-2 py-0.5 rounded bg-rose-100 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">{t("PDF (.PDF)")}</span>
+                <span className="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">{t("Excel (.XLSX)")}</span>
+                <span className="px-2 py-0.5 rounded bg-orange-100 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400">{t("PowerPoint (.PPTX)")}</span>
+                <span className="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">{t("Images & Code")}</span>
               </div>
             </div>
 
@@ -609,7 +614,7 @@ export default function DocumentViewerClient({
               <svg className="w-4 h-4 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              <span>Files stay 100% on your machine. Memory is released automatically when closed.</span>
+              <span>{t("The viewer processes selected files in the browser. Some previews load supporting libraries.")}</span>
             </p>
           </div>
         )}
@@ -669,7 +674,7 @@ export default function DocumentViewerClient({
                               key={colIndex}
                               className="px-4 py-2 font-mono font-bold uppercase border-r border-slate-200 dark:border-slate-700 min-w-[120px]"
                             >
-                              {String.fromCharCode(65 + (colIndex % 26))}
+                              {t(String.fromCharCode(65 + (colIndex % 26)))}
                               {colIndex >= 26 ? Math.floor(colIndex / 26) : ''}
                             </th>
                           ))}
@@ -689,7 +694,7 @@ export default function DocumentViewerClient({
                                 key={cIdx}
                                 className="px-4 py-1.5 text-slate-700 dark:text-slate-300 border-r border-slate-100 dark:border-slate-800 truncate max-w-sm"
                               >
-                                {cell !== undefined && cell !== null ? String(cell) : ''}
+                                {t(cell !== undefined && cell !== null ? String(cell) : '')}
                               </td>
                             ))}
                           </tr>
@@ -697,12 +702,12 @@ export default function DocumentViewerClient({
                       </tbody>
                     </table>
                   ) : (
-                    <div className="p-8 text-center text-slate-400">Sheet is empty.</div>
+                    <div className="p-8 text-center text-slate-400">{t("Sheet is empty.")}</div>
                   )}
                 </div>
 
                 <div className="bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-3 py-2 flex items-center gap-1 overflow-x-auto">
-                  <span className="text-[10px] uppercase font-bold text-slate-400 mr-2">Sheets:</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 mr-2">{t("Sheets:")}</span>
                   {doc.excelSheets.map((sheet, sIdx) => (
                     <button
                       key={sheet.name}
@@ -726,7 +731,7 @@ export default function DocumentViewerClient({
                 <div className="aspect-[16/9] w-full bg-white dark:bg-darkBg-card rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-8 sm:p-12 flex flex-col justify-between">
                   <div className="space-y-4">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-[#FF2E54]">
-                      Slide {(doc.currentSlideIndex || 0) + 1} of {doc.pptxSlides.length}
+                      {t("Slide ")}{(doc.currentSlideIndex || 0) + 1} {t(" of ")}{doc.pptxSlides.length}
                     </span>
                     <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                       {doc.pptxSlides[doc.currentSlideIndex || 0]?.title}
@@ -745,7 +750,7 @@ export default function DocumentViewerClient({
 
                   <div className="flex justify-between items-center text-xs text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-4">
                     <span>{doc.name}</span>
-                    <span>Slide Viewer</span>
+                    <span>{t("Slide Viewer")}</span>
                   </div>
                 </div>
 
@@ -758,11 +763,10 @@ export default function DocumentViewerClient({
                     }
                     className="px-4 py-2 bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 text-xs font-bold rounded-lg disabled:opacity-30"
                   >
-                    &larr; Previous
-                  </button>
+                    {t("← Previous")}</button>
 
                   <span className="text-xs font-bold text-slate-600 dark:text-slate-300">
-                    Slide {(doc.currentSlideIndex || 0) + 1} / {doc.pptxSlides.length}
+                    {t("Slide ")}{(doc.currentSlideIndex || 0) + 1} / {doc.pptxSlides.length}
                   </span>
 
                   <button
@@ -776,8 +780,7 @@ export default function DocumentViewerClient({
                     }
                     className="px-4 py-2 bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 text-xs font-bold rounded-lg disabled:opacity-30"
                   >
-                    Next &rarr;
-                  </button>
+                    {t("Next →")}</button>
                 </div>
               </div>
             )}
@@ -810,7 +813,7 @@ export default function DocumentViewerClient({
                 >
                   <div className="p-3 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs">
                     <span className="font-bold text-slate-700 dark:text-slate-300">
-                      Line Count: {doc.lines?.length || 0}
+                      {t("Line Count: ")}{doc.lines?.length || 0}
                     </span>
                     <span className="font-mono text-slate-400 uppercase">{doc.extension}</span>
                   </div>
@@ -823,9 +826,10 @@ export default function DocumentViewerClient({
         )}
 
         <div className="w-full max-w-4xl mt-16 pt-8 border-t border-slate-200 dark:border-slate-800">
+          {guideLinks}
           <ReviewSection
             itemSlug="view-documents-online"
-            toolName="View Documents Online"
+            toolName={t("View Documents Online")}
             initialStats={initialStats}
             initialReviews={initialReviews}
           />
@@ -848,6 +852,9 @@ function PdfPageCanvas({
   zoom: number;
   rotation: number;
 }) {
+  const locale = useLocale();
+  const t = useTranslations();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [renderError, setRenderError] = useState<boolean>(false);
 
@@ -915,13 +922,12 @@ function PdfPageCanvas({
     <div className="relative bg-white shadow-md rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 flex flex-col items-center mx-auto mb-6 transition-all">
       {renderError ? (
         <div className="p-8 text-xs text-slate-400 font-mono text-center">
-          Page {pageNum} could not be rendered
-        </div>
+          {t("Page ")}{pageNum} {t(" could not be rendered")}</div>
       ) : (
         <canvas ref={canvasRef} className="block" />
       )}
       <div className="py-1 text-[10px] text-slate-400 font-mono tracking-wider text-center w-full bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 select-none">
-        Page {pageNum} of {totalPages}
+        {t("Page ")}{pageNum} {t(" of ")}{totalPages}
       </div>
     </div>
   );

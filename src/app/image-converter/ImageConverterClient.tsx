@@ -1,5 +1,7 @@
 // src/app/image-converter/ImageConverterClient.tsx
 'use client';
+import { useTranslations, useLocalizedPath, useLocale } from '@/locales/LocaleProvider';
+
 
 import React, { useState, useRef, useEffect } from 'react';
 import ReviewSection from '@/components/reviews/ReviewSection';
@@ -24,7 +26,7 @@ interface QueueItem {
 
 const SUPPORTED_OUTPUT_FORMATS: { format: OutputFormat; label: string; desc: string }[] = [
   { format: 'JPG', label: 'JPG', desc: 'Standard photo compression (white background)' },
-  { format: 'PNG', label: 'PNG', desc: 'Lossless quality with full alpha transparency' },
+  { format: 'PNG', label: 'PNG', desc: 'PNG with transparency support' },
   { format: 'WEBP', label: 'WebP', desc: 'High-efficiency modern web graphics' },
   { format: 'GIF', label: 'GIF', desc: 'Static GIF image (single frame)' },
   { format: 'BMP', label: 'BMP', desc: 'Uncompressed 24-bit Windows Bitmap' },
@@ -49,13 +51,24 @@ function checkMimeEncodingSupport(mime: string): boolean {
 interface ImageConverterClientProps {
   initialStats?: AggregateRatingStats | null;
   initialReviews?: Review[];
+  breadcrumb?: React.ReactNode;
+  embedded?: boolean;
+  initialFormat?: OutputFormat;
+  guideLinks?: React.ReactNode;
 }
 
 export default function ImageConverterClient({
   initialStats = null,
   initialReviews = [],
+  breadcrumb,
+  embedded = false,
+  initialFormat = 'PNG',
+  guideLinks,
 }: ImageConverterClientProps) {
-  const [selectedFormat, setSelectedFormat] = useState<OutputFormat>('PNG');
+  const locale = useLocale();
+  const t = useTranslations();
+
+  const [selectedFormat, setSelectedFormat] = useState<OutputFormat>(initialFormat);
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [isConvertingAll, setIsConvertingAll] = useState(false);
   const [avifSupported, setAvifSupported] = useState<boolean>(true);
@@ -66,18 +79,20 @@ export default function ImageConverterClient({
     setAvifSupported(checkMimeEncodingSupport('image/avif'));
   }, []);
 
+  const liveUrls = useRef(new Set<string>());
   useEffect(() => {
-    return () => {
-      queue.forEach((item) => {
-        if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
-        if (item.convertedUrl) URL.revokeObjectURL(item.convertedUrl);
-      });
-    };
+    const nextUrls = new Set(queue.flatMap(item => [item.previewUrl, item.convertedUrl].filter((url): url is string => Boolean(url))));
+    for (const url of liveUrls.current) if (!nextUrls.has(url)) URL.revokeObjectURL(url);
+    liveUrls.current = nextUrls;
   }, [queue]);
+  useEffect(() => () => {
+    for (const url of liveUrls.current) URL.revokeObjectURL(url);
+  }, []);
 
   const handleFormatChange = (newFormat: OutputFormat) => {
+    if (isConvertingAll) return;
     if (newFormat === 'AVIF' && !avifSupported) {
-      alert('AVIF canvas encoding is not supported by your current browser engine. Please choose WebP, PNG, or JPG.');
+      alert(t('AVIF canvas encoding is not supported by your current browser engine. Please choose WebP, PNG, or JPG.'));
       return;
     }
     setSelectedFormat(newFormat);
@@ -87,6 +102,7 @@ export default function ImageConverterClient({
   };
 
   const handleAddFiles = (fileList: FileList | File[]) => {
+    if (isConvertingAll) return;
     const validFiles: QueueItem[] = [];
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'tif', 'ico', 'avif', 'svg', 'heic'];
 
@@ -119,6 +135,7 @@ export default function ImageConverterClient({
   };
 
   const handleRemoveItem = (id: string) => {
+    if (isConvertingAll) return;
     setQueue((prev) => {
       const target = prev.find((item) => item.id === id);
       if (target?.previewUrl) URL.revokeObjectURL(target.previewUrl);
@@ -128,6 +145,7 @@ export default function ImageConverterClient({
   };
 
   const handleClearAll = () => {
+    if (isConvertingAll) return;
     queue.forEach((item) => {
       if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
       if (item.convertedUrl) URL.revokeObjectURL(item.convertedUrl);
@@ -147,7 +165,7 @@ export default function ImageConverterClient({
     const buffer = new ArrayBuffer(fileSize);
     const view = new DataView(buffer);
 
-    view.setUint16(0, 0x4d42, false);
+    view.setUint16(0, 0x4d42, true);
     view.setUint32(2, fileSize, true);
     view.setUint32(6, 0, true);
     view.setUint32(10, 54, true);
@@ -393,7 +411,7 @@ export default function ImageConverterClient({
       }
     }
 
-    setQueue(updatedQueue);
+    setQueue(current => current.map(item => updatedQueue.find(updated => updated.id === item.id) || item));
     setIsConvertingAll(false);
   };
 
@@ -455,23 +473,22 @@ export default function ImageConverterClient({
   };
 
   const convertedCount = queue.filter((i) => i.status === 'converted').length;
+  const Container = embedded ? 'div' : 'main';
 
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-darkBg py-12 px-4 transition-colors">
+    <Container className={embedded ? undefined : "min-h-screen bg-slate-50 dark:bg-darkBg py-12 px-4 transition-colors"}>
       <div className="max-w-4xl mx-auto text-center space-y-4">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          Image Converter
-        </h1>
+        {breadcrumb}
+        {!embedded && <><h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+          {t("Image Converter")}</h1>
         <p className="text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Universal multi-format bulk image converter. Batch convert photos and graphics to any format instantly with zero quality loss.
-        </p>
+          {t("Convert a batch of images to a format offered by the tool. Results depend on the input, output format and browser.")}</p></>}
 
         {/* ─── Interactive Batch Conversion Workspace ──────────────────────── */}
         <div className="w-full max-w-3xl mx-auto my-8 bg-white dark:bg-darkBg-card rounded-3xl shadow-xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 text-left transition-all">
           <div className="mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2.5">
-              1. Choose Target Output Format:
-            </label>
+              {t("1. Choose Target Output Format:")}</label>
             <div className="flex flex-wrap gap-2">
               {SUPPORTED_OUTPUT_FORMATS.map(({ format, label }) => {
                 const isSelected = selectedFormat === format;
@@ -481,7 +498,7 @@ export default function ImageConverterClient({
                   <button
                     key={format}
                     type="button"
-                    disabled={isAvifDisabled}
+                    disabled={isAvifDisabled || isConvertingAll}
                     onClick={() => handleFormatChange(format)}
                     className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                       isSelected
@@ -491,14 +508,14 @@ export default function ImageConverterClient({
                         : 'bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
                     }`}
                   >
-                    {label}
+                    {t(label)}
                   </button>
                 );
               })}
             </div>
             <p className="text-[11px] text-slate-400 mt-2">
-              Target: <strong className="text-slate-800 dark:text-slate-200">{selectedFormat}</strong> —{' '}
-              {SUPPORTED_OUTPUT_FORMATS.find((f) => f.format === selectedFormat)?.desc}
+              {t("Target: ")}<strong className="text-slate-800 dark:text-slate-200">{t(selectedFormat)}</strong> —{t(' ')}
+              {t(SUPPORTED_OUTPUT_FORMATS.find((f) => f.format === selectedFormat)?.desc ?? '')}
             </p>
           </div>
 
@@ -523,27 +540,23 @@ export default function ImageConverterClient({
               </svg>
             </div>
             <p className="text-base font-bold text-slate-800 dark:text-white">
-              Drag & drop multiple images here
-            </p>
+              {t("Drag & drop multiple images here")}</p>
             <p className="text-xs text-slate-400 mt-1 mb-4">
-              or click to browse from your computer or phone
-            </p>
+              {t("or click to browse from your computer or phone")}</p>
             <button
               type="button"
               className="px-6 py-2.5 bg-[#FF2E54] hover:bg-[#E02447] text-white font-bold text-xs rounded-full shadow-md shadow-rose-500/25 transition-all"
             >
-              Choose Images to Convert
-            </button>
+              {t("Choose Images to Convert")}</button>
             <p className="text-[11px] text-slate-400 mt-3">
-              Supports JPG, PNG, WebP, GIF, BMP, TIFF, SVG, and ICO • Batch processing
-            </p>
+              {t("Supports JPG, PNG, WebP, GIF, BMP, TIFF, SVG, and ICO • Batch processing")}</p>
           </div>
 
           {queue.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center justify-between text-xs pb-2 border-b border-slate-100 dark:border-slate-800">
                 <span className="font-bold text-slate-800 dark:text-slate-200">
-                  Image Queue ({queue.length} {queue.length === 1 ? 'file' : 'files'})
+                  {t("Image Queue (")}{queue.length} {t(queue.length === 1 ? 'file' : 'files')})
                 </span>
                 <div className="flex gap-2">
                   <button
@@ -551,16 +564,14 @@ export default function ImageConverterClient({
                     onClick={() => fileInputRef.current?.click()}
                     className="text-blue-600 dark:text-blue-400 font-bold hover:underline"
                   >
-                    + Add More
-                  </button>
+                    {t("+ Add More")}</button>
                   <span className="text-slate-300 dark:text-slate-700">|</span>
                   <button
                     type="button"
                     onClick={handleClearAll}
                     className="text-rose-500 hover:underline"
                   >
-                    Clear All
-                  </button>
+                    {t("Clear All")}</button>
                 </div>
               </div>
 
@@ -582,9 +593,9 @@ export default function ImageConverterClient({
                           {item.name}
                         </p>
                         <p className="text-[10px] text-slate-400 mt-0.5">
-                          {(item.size / 1024).toFixed(0)} KB •{' '}
+                          {t((item.size / 1024).toFixed(0))} {t(" KB •")}{t(' ')}
                           <span className="font-bold text-slate-600 dark:text-slate-300">
-                            {item.originalExt} → {item.targetFormat}
+                            {t(item.originalExt)} → {t(item.targetFormat)}
                           </span>
                         </p>
                       </div>
@@ -593,42 +604,37 @@ export default function ImageConverterClient({
                     <div className="flex items-center gap-2 shrink-0">
                       {item.status === 'ready' && (
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-                          Ready
-                        </span>
+                          {t("Ready")}</span>
                       )}
 
                       {item.status === 'converting' && (
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 animate-pulse">
-                          Converting...
-                        </span>
+                          {t("Converting...")}</span>
                       )}
 
                       {item.status === 'converted' && (
                         <div className="flex items-center gap-2">
                           <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400">
-                            ✓ Converted
-                          </span>
+                            {t("✓ Converted")}</span>
                           <button
                             type="button"
                             onClick={() => handleDownloadSingle(item)}
                             className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold rounded-lg shadow-sm transition-all"
                           >
-                            Download
-                          </button>
+                            {t("Download")}</button>
                         </div>
                       )}
 
                       {item.status === 'error' && (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700" title={item.errorMessage}>
-                          Error
-                        </span>
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700" title={item.errorMessage && t(item.errorMessage)}>
+                          {t("Error")}</span>
                       )}
 
                       <button
                         type="button"
                         onClick={() => handleRemoveItem(item.id)}
                         className="text-slate-400 hover:text-red-500 p-1 text-sm font-bold"
-                        title="Remove file"
+                        title={t("Remove file")}
                       >
                         ✕
                       </button>
@@ -639,8 +645,7 @@ export default function ImageConverterClient({
 
               <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-slate-100 dark:border-slate-800">
                 <p className="text-[11px] text-slate-400">
-                  Converting to <strong className="text-[#FF2E54]">{selectedFormat}</strong> directly in browser memory.
-                </p>
+                  {t("Converting to ")}<strong className="text-[#FF2E54]">{t(selectedFormat)}</strong> {t(" directly in browser memory.")}</p>
 
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                   {convertedCount > 0 && (
@@ -652,7 +657,7 @@ export default function ImageConverterClient({
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                       </svg>
-                      <span>Download All as .ZIP ({convertedCount})</span>
+                      <span>{t("Download All as .ZIP (")}{convertedCount})</span>
                     </button>
                   )}
 
@@ -662,7 +667,7 @@ export default function ImageConverterClient({
                     disabled={isConvertingAll}
                     className="flex-1 sm:flex-initial px-6 py-2.5 bg-[#FF2E54] hover:bg-[#E02447] text-white text-xs font-bold rounded-xl shadow-md shadow-rose-500/25 transition-all disabled:opacity-50"
                   >
-                    {isConvertingAll ? 'Converting Images...' : `Convert All to ${selectedFormat}`}
+                    {t(isConvertingAll ? 'Converting Images...' : `Convert All to ${selectedFormat}`)}
                   </button>
                 </div>
               </div>
@@ -670,45 +675,39 @@ export default function ImageConverterClient({
           )}
         </div>
 
-        <section className="text-left mt-16 max-w-2xl mx-auto border-t border-slate-200 dark:border-slate-800 pt-8">
+        {!embedded && <><section className="text-left mt-16 max-w-2xl mx-auto border-t border-slate-200 dark:border-slate-800 pt-8">
           <h2 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-4">
-            Frequently Asked Questions
-          </h2>
+            {t("Frequently Asked Questions")}</h2>
           <div className="space-y-4">
             <div>
               <h3 className="font-semibold text-slate-700 dark:text-slate-300 text-sm">
-                Which image formats can I convert to?
-              </h3>
+                {t("Which image formats can I convert to?")}</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                You can convert directly to JPG, PNG (with alpha transparency), WebP, BMP, TIFF, and ICO (favicon) formats.
-              </p>
+                {t("The format selector offers JPG, PNG, WebP, GIF, BMP, TIFF, ICO and AVIF. AVIF requires browser encoding support. GIF output is a still image.")}</p>
             </div>
             <div>
               <h3 className="font-semibold text-slate-700 dark:text-slate-300 text-sm">
-                Can I convert multiple images at once?
-              </h3>
+                {t("Can I convert multiple images at once?")}</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Yes, our Image Converter supports batch processing. Upload multiple photos at once and download them individually or as a single combined ZIP archive.
-              </p>
+                {t("Yes, our Image Converter supports batch processing. Upload multiple photos at once and download them individually or as a single combined ZIP archive.")}</p>
             </div>
             <div>
               <h3 className="font-semibold text-slate-700 dark:text-slate-300 text-sm">
-                Are my photos uploaded to any external server?
-              </h3>
+                {t("Are my photos uploaded to any external server?")}</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                No. All image processing runs directly inside your browser using HTML5 Canvas technology. Your photos never leave your device.
-              </p>
+                {t("This image tool decodes and converts selected files in your browser. The page can load additional resources, such as the library used to create ZIP downloads.")}</p>
             </div>
           </div>
         </section>
+        {guideLinks}
 
         <ReviewSection
           itemSlug="image-converter"
-          toolName="Image Converter"
+          toolName={t("Image Converter")}
           initialStats={initialStats}
           initialReviews={initialReviews}
-        />
+        /></>}
       </div>
-    </main>
+    </Container>
   );
 }

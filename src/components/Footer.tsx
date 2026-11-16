@@ -1,10 +1,23 @@
 // src/components/Footer.tsx
 'use client';
+import { useTranslations, useLocalizedPath, useLocale } from '@/locales/LocaleProvider';
+
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { getPublishedPseoPage } from '@/config/pseo-publication';
 
 export default function Footer() {
+  const locale = useLocale();
+  const t = useTranslations();
+  const linkTo = useLocalizedPath();
+  const guides = [
+    ['/p/word-to-pdf-for-mac', 'Word to PDF for Mac'],
+    ['/p/pdf-to-word-without-watermark', 'PDF to Word and Watermarks'],
+    ['/p/jpg-to-pdf-on-iphone', 'JPG to PDF on iPhone'],
+    ['/p/excel-to-pdf-for-windows', 'Excel to PDF for Windows'],
+  ].map(([path, label]) => ({ path: linkTo(path), label })).filter(guide => getPublishedPseoPage(guide.path));
+
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
@@ -22,7 +35,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8 pb-12 border-b border-slate-200 dark:border-slate-800">
           {/* Brand Info */}
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href={linkTo("/")} className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#FF2E54] to-rose-400 flex items-center justify-center text-white font-bold text-xs">
                 P
               </div>
@@ -31,76 +44,71 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
-              Fast, secure document conversion and previewing tools directly in your browser.
-            </p>
+              {t("Online tools for converting and previewing documents.")}</p>
           </div>
 
           {/* Popular Tools */}
           <div className="space-y-3">
-            <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Popular Tools</h4>
+            <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">{t("Popular Tools")}</h4>
             <ul className="space-y-2">
-              <li><Link href="/pdf-to-word" className="hover:text-[#FF2E54] transition-colors">PDF to Word</Link></li>
-              <li><Link href="/pdf-to-jpg" className="hover:text-[#FF2E54] transition-colors">PDF to JPG</Link></li>
-              <li><Link href="/pdf-to-excel" className="hover:text-[#FF2E54] transition-colors">PDF to Excel</Link></li>
-              <li><Link href="/pdf-to-png" className="hover:text-[#FF2E54] transition-colors">PDF to PNG</Link></li>
-              <li><Link href="/pdf-to-scanned-document" className="hover:text-[#FF2E54] transition-colors">PDF to Scanned Document</Link></li>
+              <li><Link href={linkTo("/pdf-to-word")} className="hover:text-[#FF2E54] transition-colors">{t("PDF to Word")}</Link></li>
+              <li><Link href={linkTo("/pdf-to-jpg")} className="hover:text-[#FF2E54] transition-colors">{t("PDF to JPG")}</Link></li>
+              <li><Link href={linkTo("/pdf-to-excel")} className="hover:text-[#FF2E54] transition-colors">{t("PDF to Excel")}</Link></li>
+              <li><Link href={linkTo("/pdf-to-png")} className="hover:text-[#FF2E54] transition-colors">{t("PDF to PNG")}</Link></li>
+              <li><Link href={linkTo("/pdf-to-scanned-document")} className="hover:text-[#FF2E54] transition-colors">{t("PDF to Scanned Document")}</Link></li>
             </ul>
           </div>
 
           {/* Converters */}
           <div className="space-y-3">
-            <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Converters</h4>
+            <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">{t("Converters")}</h4>
             <ul className="space-y-2">
-              <li><Link href="/word-to-pdf" className="hover:text-[#FF2E54] transition-colors">Word to PDF</Link></li>
-              <li><Link href="/jpg-to-pdf" className="hover:text-[#FF2E54] transition-colors">JPG to PDF</Link></li>
-              <li><Link href="/png-to-pdf" className="hover:text-[#FF2E54] transition-colors">PNG to PDF</Link></li>
-              <li><Link href="/image-converter" className="hover:text-[#FF2E54] transition-colors">Image Converter</Link></li>
-              <li><Link href="/view-documents-online" className="hover:text-[#FF2E54] transition-colors">View Documents Online</Link></li>
+              <li><Link href={linkTo("/word-to-pdf")} className="hover:text-[#FF2E54] transition-colors">{t("Word to PDF")}</Link></li>
+              <li><Link href={linkTo("/jpg-to-pdf")} className="hover:text-[#FF2E54] transition-colors">{t("JPG to PDF")}</Link></li>
+              <li><Link href={linkTo("/png-to-pdf")} className="hover:text-[#FF2E54] transition-colors">{t("PNG to PDF")}</Link></li>
+              <li><Link href={linkTo("/image-converter")} className="hover:text-[#FF2E54] transition-colors">{t("Image Converter")}</Link></li>
+              <li><Link href={linkTo("/view-documents-online")} className="hover:text-[#FF2E54] transition-colors">{t("View Documents Online")}</Link></li>
             </ul>
           </div>
 
           {/* Platform Guides (Solves Orphan URLs) */}
           <div className="space-y-3">
-            <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Guides &amp; Devices</h4>
+            <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">{t("Guides & Devices")}</h4>
             <ul className="space-y-2">
-              <li><Link href="/p/word-to-pdf-for-mac" className="hover:text-[#FF2E54] transition-colors">Word to PDF for Mac</Link></li>
-              <li><Link href="/p/pdf-to-word-without-watermark" className="hover:text-[#FF2E54] transition-colors">PDF to Word without Watermark</Link></li>
-              <li><Link href="/p/jpg-to-pdf-on-iphone" className="hover:text-[#FF2E54] transition-colors">JPG to PDF on iPhone</Link></li>
-              <li><Link href="/p/excel-to-pdf-for-windows" className="hover:text-[#FF2E54] transition-colors">Excel to PDF for Windows</Link></li>
+              {guides.map(guide => <li key={guide.path}><Link href={guide.path} className="hover:text-[#FF2E54] transition-colors">{t(guide.label)}</Link></li>)}
             </ul>
           </div>
 
           {/* Legal & Company Pages */}
           <div className="space-y-3">
-            <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Company &amp; Legal</h4>
+            <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">{t("Company & Legal")}</h4>
             <ul className="space-y-2">
-              <li><Link href="/privacy" className="hover:text-[#FF2E54] transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-[#FF2E54] transition-colors">Terms of Service</Link></li>
-              <li><Link href="/contact" className="hover:text-[#FF2E54] transition-colors">Contact Support</Link></li>
-              <li><Link href="/markdown-editor" className="hover:text-[#FF2E54] transition-colors">Markdown Editor</Link></li>
+              <li><Link href={linkTo("/privacy")} className="hover:text-[#FF2E54] transition-colors">{t("Privacy Policy")}</Link></li>
+              <li><Link href={linkTo("/terms")} className="hover:text-[#FF2E54] transition-colors">{t("Terms of Service")}</Link></li>
+              <li><Link href={linkTo("/contact")} className="hover:text-[#FF2E54] transition-colors">{t("Contact Support")}</Link></li>
+              <li><Link href={linkTo("/markdown-editor")} className="hover:text-[#FF2E54] transition-colors">{t("Markdown Editor")}</Link></li>
             </ul>
           </div>
 
           {/* Newsletter Box */}
           <div className="space-y-3">
-            <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">Updates</h4>
+            <h4 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">{t("Updates")}</h4>
             <p className="text-[11px] text-slate-500 dark:text-slate-400">
-              Get notified when new converter tools are released.
-            </p>
+              {t("Get notified when new converter tools are released.")}</p>
             <form onSubmit={handleSubscribe} className="space-y-2">
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email address"
+                placeholder={t("Your email address")}
                 className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-[#FF2E54] text-slate-800 dark:text-slate-200"
               />
               <button
                 type="submit"
                 className="w-full py-2 bg-[#FF2E54] hover:bg-[#E02447] text-white font-bold text-xs rounded-lg shadow-sm transition-all"
               >
-                {subscribed ? 'Subscribed!' : 'Subscribe'}
+                {t(subscribed ? 'Subscribed!' : 'Subscribe')}
               </button>
             </form>
           </div>
@@ -108,11 +116,11 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-400">
-          <p>&copy; {new Date().getFullYear()} PDFConverter. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {t(" PDFConverter. All rights reserved.")}</p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-[#FF2E54] transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-[#FF2E54] transition-colors">Terms of Service</Link>
-            <Link href="/contact" className="hover:text-[#FF2E54] transition-colors">Contact</Link>
+            <Link href={linkTo("/privacy")} className="hover:text-[#FF2E54] transition-colors">{t("Privacy Policy")}</Link>
+            <Link href={linkTo("/terms")} className="hover:text-[#FF2E54] transition-colors">{t("Terms of Service")}</Link>
+            <Link href={linkTo("/contact")} className="hover:text-[#FF2E54] transition-colors">{t("Contact")}</Link>
           </div>
         </div>
       </div>

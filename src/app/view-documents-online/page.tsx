@@ -1,60 +1,42 @@
+import Breadcrumbs, { toolTrail } from '@/components/Breadcrumbs';
+import { TOOLS_REGISTRY } from '@/config/tools-registry';
+import { pageMetadata } from '@/config/page-metadata';
+import { generateHreflangAlternates } from '@/config/i18n-registry';
+
+import { requestLocale } from '@/locales/server';
+import { translate } from '@/locales/translate';
+export const dynamic = 'force-dynamic';
 // src/app/view-documents-online/page.tsx
 import { Metadata } from 'next';
 import DocumentViewerClient from './DocumentViewerClient';
-import { reviewsRepository } from '@/core/reviews/reviews-repository';
+import { getPublicReviewData } from '@/core/reviews/public-review-data';
 import ReviewSchema from '@/components/reviews/ReviewSchema';
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: 'View Documents Online - Free Document Viewer | PDFConverter',
-  description: 'Open and preview PDF, Word DOCX, Excel XLSX, PPTX, CSV, and image files directly in your browser without software installation. 100% private and free.',
-  alternates: {
-    canonical: 'https://www.pdfconverter.space/view-documents-online',
-  },
-};
+const languages = generateHreflangAlternates('view-documents-online').languages;
+export const metadata: Metadata = pageMetadata('en',
+  'View Documents Online - Free Document Viewer | PDFConverter',
+  'Preview supported PDF, Office, CSV and image files in your browser.',
+  languages.en, languages,
+);
 
 export default async function ViewDocumentsOnlinePage() {
-  const [stats, reviews] = await Promise.all([
-    reviewsRepository.getAggregateStats('view-documents-online'),
-    reviewsRepository.getPublishedReviews('view-documents-online', { limit: 20 }),
-  ]);
+  const locale = await requestLocale();
+  const t = (value: string) => translate(locale, value);
 
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://www.pdfconverter.space',
-      },
-      {
-        '@type': 'ListItem',
-        position: 2,
-        name: 'View Documents Online',
-        item: 'https://www.pdfconverter.space/view-documents-online',
-      },
-    ],
-  };
-
-  const safeBreadcrumbJson = JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c');
+  const { stats, reviews } = await getPublicReviewData('view-documents-online');
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: safeBreadcrumbJson }}
-      />
       <ReviewSchema
-        toolName="View Documents Online"
-        toolDescription="Open and preview PDF, Word DOCX, Excel XLSX, PPTX, CSV, and image files directly in your browser without software."
+        toolName={t("View Documents Online")}
+        toolDescription={t("Open and preview PDF, Word DOCX, Excel XLSX, PPTX, CSV, and image files directly in your browser without software.")}
         toolSlug="view-documents-online"
         stats={stats}
         reviews={reviews}
       />
-      <DocumentViewerClient initialStats={stats} initialReviews={reviews} />
+      <DocumentViewerClient initialStats={stats} initialReviews={reviews} breadcrumb={<Breadcrumbs locale={locale} centered trail={toolTrail(locale, TOOLS_REGISTRY['view-documents-online'])} />} />
     </>
   );
 }

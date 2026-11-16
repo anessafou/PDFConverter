@@ -1,0 +1,604 @@
+[
+  [
+    "pdf-to-word",
+    "Convertissez des PDF en documents Microsoft Word DOCX modifiables.",
+    "Convierte PDF en documentos Microsoft Word DOCX editables.",
+    "PDF-Dokumente in bearbeitbare Microsoft-Word-DOCX-Dateien umwandeln.",
+    "حوّل ملفات PDF إلى مستندات Microsoft Word DOCX قابلة للتعديل."
+  ],
+  [
+    "pdf-to-ppt",
+    "Convertissez des PDF en présentations PowerPoint.",
+    "Convierte PDF en presentaciones PowerPoint.",
+    "PDF-Dateien in PowerPoint-Präsentationen umwandeln.",
+    "حوّل ملفات PDF إلى عروض PowerPoint."
+  ],
+  [
+    "pdf-to-excel",
+    "Extrayez les tableaux PDF dans des feuilles Excel.",
+    "Extrae tablas de PDF en hojas de cálculo Excel.",
+    "Tabellen aus PDFs in Excel-Tabellen extrahieren.",
+    "استخرج جداول PDF إلى أوراق عمل Excel."
+  ],
+  [
+    "pdf-to-txt",
+    "Extrayez le texte brut de vos PDF sans mise en forme.",
+    "Extrae el texto de tus PDF sin formato.",
+    "Unformatierten Text aus Ihren PDFs extrahieren.",
+    "استخرج النص العادي من ملفات PDF دون تنسيق."
+  ],
+  [
+    "pdf-to-rtf",
+    "Convertissez des PDF en documents Rich Text Format.",
+    "Convierte PDF en documentos de texto enriquecido RTF.",
+    "PDF in Rich-Text-Dokumente umwandeln.",
+    "حوّل PDF إلى مستندات نص منسق RTF."
+  ],
+  [
+    "pdf-to-png",
+    "Exportez les pages PDF en images PNG haute résolution.",
+    "Exporta páginas PDF como imágenes PNG de alta resolución.",
+    "PDF-Seiten als hochauflösende PNG-Bilder rendern.",
+    "اعرض صفحات PDF كصور PNG عالية الدقة."
+  ],
+  [
+    "pdf-to-jpg",
+    "Extrayez les pages PDF en images JPG nettes.",
+    "Extrae páginas PDF como imágenes JPG nítidas.",
+    "PDF-Seiten als scharfe JPG-Bilder extrahieren.",
+    "استخرج صفحات PDF كصور JPG واضحة."
+  ],
+  [
+    "pdf-to-long-image",
+    "Assemblez toutes les pages PDF en une seule image verticale.",
+    "Une todas las páginas PDF en una sola imagen vertical.",
+    "Alle PDF-Seiten zu einem durchgehenden vertikalen Bild verbinden.",
+    "اجمع جميع صفحات PDF في صورة عمودية متصلة واحدة."
+  ],
+  [
+    "pdf-to-pdfa",
+    "Convertissez des PDF au format PDF/A conforme aux normes ISO pour l’archivage durable.",
+    "Convierte PDF a PDF/A conforme a normas ISO para su archivo a largo plazo.",
+    "PDF in ISO-konformes PDF/A zur Langzeitarchivierung umwandeln.",
+    "حوّل PDF إلى تنسيق PDF/A المطابق لمعايير ISO للأرشفة طويلة الأمد."
+  ],
+  [
+    "pdf-to-markdown",
+    "Transformez le texte et les tableaux PDF en Markdown structuré.",
+    "Transforma el texto y las tablas PDF en Markdown estructurado.",
+    "PDF-Text und Tabellen in strukturiertes Markdown umwandeln.",
+    "حوّل نصوص PDF وجداولها إلى Markdown منظم."
+  ],
+  [
+    "pdf-to-scanned-document",
+    "Créez des documents à l’aspect numérisé avec recadrage, rotation, filtres photocopie et réorganisation des pages.",
+    "Crea documentos con aspecto escaneado mediante recorte, giro, filtros de fotocopia y reordenación de páginas.",
+    "Digitale Dokumente mit Zuschnitt, Drehung, Kopierfiltern und Seitenanordnung in realistisch gescannte Dateien umwandeln.",
+    "حوّل المستندات الرقمية إلى ملفات تبدو ممسوحة ضوئيًا مع القص والتدوير وفلاتر النسخ وإعادة ترتيب الصفحات."
+  ],
+  [
+    "pdf-to-csv",
+    "Extrayez les tableaux PDF en valeurs séparées par des virgules (CSV).",
+    "Extrae tablas PDF en valores separados por comas (CSV).",
+    "Tabellendaten aus PDFs direkt in CSV extrahieren.",
+    "استخرج بيانات جداول PDF إلى قيم مفصولة بفواصل CSV."
+  ],
+  [
+    "pdf-to-xml",
+    "Extrayez le contenu structuré et les balises dans un schéma XML.",
+    "Extrae contenido estructurado y etiquetas en un esquema XML.",
+    "Strukturierte Inhalte und Tags in ein XML-Schema extrahieren.",
+    "استخرج المحتوى المنظم والوسوم إلى مخطط XML."
+  ],
+  [
+    "pdf-to-json",
+    "Analysez la structure et le texte des PDF pour les exporter en JSON.",
+    "Analiza la estructura y el texto PDF para exportarlos a JSON.",
+    "PDF-Layout und Zeichenfolgen als übersichtliches JSON ausgeben.",
+    "حلّل تخطيط PDF ونصوصه وأخرجها بتنسيق JSON منظم."
+  ],
+  [
+    "pdf-to-latex",
+    "Convertissez des PDF universitaires ou techniques en code source LaTeX.",
+    "Convierte PDF académicos o técnicos en código fuente LaTeX.",
+    "Wissenschaftliche oder technische PDFs in LaTeX-Quellcode umwandeln.",
+    "حوّل ملفات PDF الأكاديمية والتقنية إلى شيفرة LaTeX."
+  ],
+  [
+    "pdf-to-mobi",
+    "Adaptez des PDF aux anciens Kindle au format MOBI.",
+    "Adapta PDF a dispositivos Kindle antiguos en formato MOBI.",
+    "PDFs für ältere Kindle-Geräte im MOBI-Format aufbereiten.",
+    "حوّل PDF إلى كتب MOBI لأجهزة Kindle القديمة."
+  ],
+  [
+    "pdf-to-azw3",
+    "Convertissez des PDF au format AZW3 des liseuses Amazon Kindle.",
+    "Convierte PDF al formato AZW3 de Amazon Kindle.",
+    "PDF-Dokumente in das moderne Kindle-Format AZW3 umwandeln.",
+    "حوّل مستندات PDF إلى تنسيق Amazon Kindle AZW3."
+  ],
+  [
+    "pdf-to-xps",
+    "Convertissez des PDF au format Microsoft XML Paper Specification (XPS).",
+    "Convierte PDF al formato Microsoft XML Paper Specification (XPS).",
+    "PDF-Dokumente in Microsoft XML Paper Specification (XPS) umwandeln.",
+    "حوّل PDF إلى تنسيق Microsoft XML Paper Specification ‏(XPS)."
+  ],
+  [
+    "pdf-to-ps",
+    "Convertissez des PDF en fichiers vectoriels PostScript pour l’impression professionnelle.",
+    "Convierte PDF en archivos vectoriales PostScript para impresión profesional.",
+    "PDF in PostScript-Vektordateien für den professionellen Druck umwandeln.",
+    "حوّل PDF إلى ملفات PostScript متجهية للطباعة الاحترافية."
+  ],
+  [
+    "pdf-to-bmp",
+    "Exportez les pages PDF en images bitmap non compressées.",
+    "Exporta páginas PDF como mapas de bits sin comprimir.",
+    "PDF-Seiten als unkomprimierte Bitmap-Bilder rendern.",
+    "اعرض صفحات PDF كصور نقطية غير مضغوطة."
+  ],
+  [
+    "pdf-to-gif",
+    "Extrayez des images fixes ou GIF animés depuis des pages PDF.",
+    "Extrae imágenes fijas o GIF animados de páginas PDF.",
+    "Animierte GIFs oder Einzelbilder aus PDF-Seiten extrahieren.",
+    "استخرج صور GIF متحركة أو إطارات ثابتة من صفحات PDF."
+  ],
+  [
+    "pdf-to-tiff",
+    "Convertissez des PDF multipages en images TIFF haute résolution.",
+    "Convierte PDF de varias páginas en imágenes TIFF de alta resolución.",
+    "Mehrseitige PDFs in hochauflösende TIFF-Bilder umwandeln.",
+    "حوّل ملفات PDF متعددة الصفحات إلى صور TIFF عالية الدقة."
+  ],
+  [
+    "pdf-to-webp",
+    "Convertissez des pages PDF en images WebP légères optimisées pour le web.",
+    "Convierte páginas PDF en imágenes WebP ligeras optimizadas para la web.",
+    "PDF-Seiten in leichte, weboptimierte WebP-Bilder umwandeln.",
+    "حوّل صفحات PDF إلى صور WebP خفيفة ومحسنة للويب."
+  ],
+  [
+    "pdf-to-epub",
+    "Convertissez des PDF à mise en page fixe en livres EPUB à texte adaptable.",
+    "Convierte PDF de diseño fijo en libros EPUB con texto adaptable.",
+    "PDFs mit festem Layout in anpassbare EPUB-E-Books umwandeln.",
+    "حوّل PDF ذات التخطيط الثابت إلى كتب EPUB بنص قابل لإعادة التدفق."
+  ],
+  [
+    "pdf-to-html",
+    "Convertissez des pages PDF en code HTML5 interactif autonome.",
+    "Convierte páginas PDF en código HTML5 interactivo independiente.",
+    "PDF-Seiten in eigenständigen interaktiven HTML5-Code umwandeln.",
+    "حوّل صفحات PDF إلى شيفرة HTML5 تفاعلية مستقلة."
+  ],
+  [
+    "pdf-to-base64",
+    "Encodez les fichiers PDF binaires en chaînes Base64 pour le développement.",
+    "Codifica archivos PDF binarios como cadenas Base64 para desarrollo.",
+    "Binäre PDF-Dateien für die Entwicklung direkt als Base64 kodieren.",
+    "رمّز ملفات PDF الثنائية إلى سلاسل Base64 للمطورين."
+  ],
+  [
+    "word-to-pdf",
+    "Convertissez des documents Microsoft Word en PDF.",
+    "Convierte documentos Microsoft Word a PDF.",
+    "Microsoft-Word-Dokumente in PDF umwandeln.",
+    "حوّل مستندات Microsoft Word إلى PDF."
+  ],
+  [
+    "ppt-to-pdf",
+    "Convertissez des présentations PowerPoint en PDF.",
+    "Convierte presentaciones PowerPoint a PDF.",
+    "PowerPoint-Präsentationen in PDF umwandeln.",
+    "حوّل عروض PowerPoint إلى PDF."
+  ],
+  [
+    "excel-to-pdf",
+    "Convertissez des feuilles de calcul Excel en PDF.",
+    "Convierte hojas de cálculo Excel a PDF.",
+    "Excel-Tabellen in PDF umwandeln.",
+    "حوّل أوراق عمل Excel إلى PDF."
+  ],
+  [
+    "txt-to-pdf",
+    "Convertissez des fichiers texte brut en documents PDF.",
+    "Convierte archivos de texto sin formato a PDF.",
+    "Textdateien in PDF-Dokumente umwandeln.",
+    "حوّل الملفات النصية العادية إلى مستندات PDF."
+  ],
+  [
+    "rtf-to-pdf",
+    "Convertissez des fichiers de texte enrichi en PDF.",
+    "Convierte archivos de texto enriquecido a PDF.",
+    "Rich-Text-Dateien in PDF umwandeln.",
+    "حوّل ملفات النص المنسق إلى PDF."
+  ],
+  [
+    "markdown-to-pdf",
+    "Convertissez des notes Markdown en documents PDF mis en forme.",
+    "Convierte notas Markdown en documentos PDF con estilo.",
+    "Markdown-Notizen in gestaltete PDF-Dokumente umwandeln.",
+    "حوّل ملاحظات Markdown إلى مستندات PDF منسقة."
+  ],
+  [
+    "odp-to-pdf",
+    "Convertissez des présentations OpenDocument en PDF.",
+    "Convierte presentaciones OpenDocument a PDF.",
+    "OpenDocument-Präsentationen in PDF umwandeln.",
+    "حوّل عروض OpenDocument إلى PDF."
+  ],
+  [
+    "ods-to-pdf",
+    "Convertissez des feuilles de calcul OpenDocument en PDF.",
+    "Convierte hojas de cálculo OpenDocument a PDF.",
+    "OpenDocument-Tabellen in PDF umwandeln.",
+    "حوّل جداول OpenDocument إلى PDF."
+  ],
+  [
+    "odt-to-pdf",
+    "Convertissez des documents texte OpenDocument en PDF.",
+    "Convierte documentos de texto OpenDocument a PDF.",
+    "OpenDocument-Textdokumente in PDF umwandeln.",
+    "حوّل مستندات OpenDocument النصية إلى PDF."
+  ],
+  [
+    "html-to-pdf",
+    "Convertissez des fichiers HTML ou du code de site web en PDF.",
+    "Convierte archivos HTML o código web a PDF.",
+    "HTML-Dateien oder Website-Code in PDF umwandeln.",
+    "حوّل ملفات HTML أو شيفرة المواقع إلى PDF."
+  ],
+  [
+    "epub-to-pdf",
+    "Convertissez des livres EPUB en PDF imprimables.",
+    "Convierte libros EPUB en archivos PDF imprimibles.",
+    "EPUB-E-Books in druckbare PDFs umwandeln.",
+    "حوّل كتب EPUB إلى ملفات PDF قابلة للطباعة."
+  ],
+  [
+    "ofd-to-pdf",
+    "Convertissez des documents chinois Open Fixed Layout (OFD) en PDF.",
+    "Convierte documentos chinos Open Fixed Layout (OFD) a PDF.",
+    "Chinesische Open-Fixed-Layout-Dokumente (OFD) in PDF umwandeln.",
+    "حوّل المستندات الصينية بتنسيق OFD إلى PDF."
+  ],
+  [
+    "caj-to-pdf",
+    "Convertissez les publications universitaires CNKI au format CAJ en PDF standard.",
+    "Convierte publicaciones académicas CNKI en formato CAJ a PDF estándar.",
+    "Wissenschaftliche CNKI-CAJ-Dateien in Standard-PDF umwandeln.",
+    "حوّل ملفات المجلات الأكاديمية CNKI بتنسيق CAJ إلى PDF قياسي."
+  ],
+  [
+    "jpg-to-pdf",
+    "Convertissez des images JPG en un document PDF unique.",
+    "Convierte imágenes JPG en un único documento PDF.",
+    "JPG-Bilder in ein einzelnes PDF-Dokument umwandeln.",
+    "حوّل صور JPG إلى مستند PDF واحد."
+  ],
+  [
+    "png-to-pdf",
+    "Convertissez des images PNG avec transparence en PDF.",
+    "Convierte imágenes PNG con transparencia a PDF.",
+    "PNG-Bilder mit Transparenz in PDF umwandeln.",
+    "حوّل صور PNG الشفافة إلى PDF."
+  ],
+  [
+    "svg-to-pdf",
+    "Convertissez des graphiques vectoriels SVG en PDF vectoriels redimensionnables.",
+    "Convierte gráficos vectoriales SVG en PDF vectoriales escalables.",
+    "SVG-Vektorgrafiken in skalierbare Vektor-PDFs umwandeln.",
+    "حوّل رسومات SVG المتجهية إلى PDF متجهي قابل لتغيير الحجم."
+  ],
+  [
+    "tiff-to-pdf",
+    "Convertissez des images TIFF numérisées multipages en PDF.",
+    "Convierte imágenes TIFF escaneadas de varias páginas a PDF.",
+    "Mehrseitige gescannte TIFF-Bilder in PDF umwandeln.",
+    "حوّل صور TIFF الممسوحة ضوئيًا متعددة الصفحات إلى PDF."
+  ],
+  [
+    "heic-to-pdf",
+    "Convertissez des photos iPhone HEIC en PDF.",
+    "Convierte fotos HEIC de iPhone a PDF.",
+    "HEIC-Fotos vom iPhone in PDF umwandeln.",
+    "حوّل صور iPhone بتنسيق HEIC إلى PDF."
+  ],
+  [
+    "webp-to-pdf",
+    "Convertissez des images WebP modernes en PDF.",
+    "Convierte imágenes WebP a PDF.",
+    "Moderne WebP-Grafiken in PDF umwandeln.",
+    "حوّل صور WebP الحديثة إلى PDF."
+  ],
+  [
+    "cad-to-pdf",
+    "Convertissez des plans AutoCAD DWG et DXF en PDF.",
+    "Convierte planos AutoCAD DWG y DXF a PDF.",
+    "AutoCAD-Zeichnungen im DWG- und DXF-Format in PDF umwandeln.",
+    "حوّل مخططات AutoCAD بتنسيقي DWG وDXF إلى PDF."
+  ],
+  [
+    "doc-to-pdf",
+    "Convertissez d’anciens documents Word DOC en PDF.",
+    "Convierte documentos Word DOC antiguos a PDF.",
+    "Ältere Word-DOC-Dokumente in PDF umwandeln.",
+    "حوّل مستندات Word DOC القديمة إلى PDF."
+  ],
+  [
+    "docx-to-odt",
+    "Convertissez Microsoft Word DOCX en OpenOffice ODT.",
+    "Convierte Microsoft Word DOCX a OpenOffice ODT.",
+    "Microsoft Word DOCX in OpenOffice ODT umwandeln.",
+    "حوّل Microsoft Word DOCX إلى OpenOffice ODT."
+  ],
+  [
+    "docx-to-txt",
+    "Extrayez le texte brut de documents Word DOCX.",
+    "Extrae texto sin formato de documentos Word DOCX.",
+    "Unformatierten Text aus Word-DOCX-Dateien extrahieren.",
+    "استخرج النص العادي من مستندات Word DOCX."
+  ],
+  [
+    "docx-to-html",
+    "Convertissez des documents Word DOCX en code HTML propre.",
+    "Convierte documentos Word DOCX en código HTML limpio.",
+    "Word-DOCX-Dokumente in übersichtlichen HTML-Code umwandeln.",
+    "حوّل مستندات Word DOCX إلى شيفرة HTML منظمة."
+  ],
+  [
+    "docx-to-rtf",
+    "Convertissez des fichiers DOCX en Rich Text Format (RTF).",
+    "Convierte archivos DOCX a texto enriquecido RTF.",
+    "DOCX-Dateien in Rich Text Format (RTF) umwandeln.",
+    "حوّل ملفات DOCX إلى تنسيق النص المنسق RTF."
+  ],
+  [
+    "xlsx-to-csv",
+    "Extrayez les feuilles de calcul Excel au format CSV.",
+    "Extrae hojas de cálculo Excel en formato CSV.",
+    "Excel-Tabellen in das CSV-Format extrahieren.",
+    "استخرج أوراق عمل Excel بتنسيق CSV."
+  ],
+  [
+    "xlsx-to-ods",
+    "Convertissez des feuilles Excel en LibreOffice Calc ODS.",
+    "Convierte hojas Excel a LibreOffice Calc ODS.",
+    "Excel-Tabellen in LibreOffice Calc ODS umwandeln.",
+    "حوّل أوراق عمل Excel إلى LibreOffice Calc ODS."
+  ],
+  [
+    "pptx-to-odp",
+    "Convertissez des présentations PowerPoint en OpenDocument ODP.",
+    "Convierte presentaciones PowerPoint a OpenDocument ODP.",
+    "PowerPoint-Präsentationen in OpenDocument ODP umwandeln.",
+    "حوّل عروض PowerPoint إلى OpenDocument ODP."
+  ],
+  [
+    "pptx-to-jpg",
+    "Convertissez des diapositives PowerPoint en images JPG.",
+    "Convierte diapositivas PowerPoint en imágenes JPG.",
+    "PowerPoint-Folien in JPG-Bilder umwandeln.",
+    "حوّل شرائح PowerPoint إلى صور JPG."
+  ],
+  [
+    "pptx-to-png",
+    "Convertissez des diapositives PowerPoint en images PNG nettes.",
+    "Convierte diapositivas PowerPoint en imágenes PNG nítidas.",
+    "PowerPoint-Folien in scharfe PNG-Bilder umwandeln.",
+    "حوّل شرائح PowerPoint إلى صور PNG واضحة."
+  ],
+  [
+    "html-to-word",
+    "Convertissez des pages HTML en documents Word DOCX modifiables.",
+    "Convierte páginas HTML en documentos Word DOCX editables.",
+    "HTML-Webseiten in bearbeitbare Word-DOCX-Dateien umwandeln.",
+    "حوّل صفحات HTML إلى ملفات Word DOCX قابلة للتعديل."
+  ],
+  [
+    "epub-to-mobi",
+    "Convertissez des livres EPUB au format Amazon Kindle MOBI.",
+    "Convierte libros EPUB al formato MOBI de Amazon Kindle.",
+    "EPUB-E-Books in Amazon Kindle MOBI umwandeln.",
+    "حوّل كتب EPUB إلى تنسيق Amazon Kindle MOBI."
+  ],
+  [
+    "heic-to-jpg",
+    "Convertissez des photos Apple HEIC en JPG standard.",
+    "Convierte fotos Apple HEIC a JPG estándar.",
+    "Apple-HEIC-Fotos in Standard-JPG umwandeln.",
+    "حوّل صور Apple HEIC إلى JPG قياسي."
+  ],
+  [
+    "heic-to-png",
+    "Convertissez des photos Apple HEIC en PNG haute qualité.",
+    "Convierte fotos Apple HEIC a PNG de alta calidad.",
+    "Apple-HEIC-Fotos in hochwertige PNG-Bilder umwandeln.",
+    "حوّل صور Apple HEIC إلى PNG عالي الجودة."
+  ],
+  [
+    "webp-to-png",
+    "Convertissez WebP en PNG avec transparence.",
+    "Convierte WebP a PNG con transparencia alfa.",
+    "WebP-Bilder in PNG mit Transparenz umwandeln.",
+    "حوّل صور WebP إلى PNG مع الشفافية."
+  ],
+  [
+    "png-to-webp",
+    "Compressez des PNG au format WebP léger.",
+    "Comprime imágenes PNG en formato WebP ligero.",
+    "PNG-Bilder in das platzsparende WebP-Format komprimieren.",
+    "اضغط صور PNG إلى تنسيق WebP خفيف."
+  ],
+  [
+    "jpg-to-png",
+    "Convertissez des JPG au format PNG.",
+    "Convierte JPG a PNG.",
+    "JPG in das PNG-Bildformat umwandeln.",
+    "حوّل JPG إلى تنسيق الصور PNG."
+  ],
+  [
+    "png-to-jpg",
+    "Convertissez des PNG en images JPG compressées.",
+    "Convierte PNG en imágenes JPG comprimidas.",
+    "PNG-Bilder in komprimierte Standard-JPGs umwandeln.",
+    "حوّل صور PNG إلى JPG مضغوط قياسي."
+  ],
+  [
+    "jpg-to-webp",
+    "Convertissez des photos JPG en WebP optimisé pour le web.",
+    "Convierte fotos JPG a WebP optimizado para la web.",
+    "JPG-Fotos in modernes, weboptimiertes WebP umwandeln.",
+    "حوّل صور JPG إلى WebP حديث ومحسن للويب."
+  ],
+  [
+    "webp-to-jpg",
+    "Convertissez des WebP en JPG largement compatible.",
+    "Convierte WebP a JPG compatible.",
+    "WebP-Bilder in das kompatible JPG-Format umwandeln.",
+    "حوّل صور WebP إلى تنسيق JPG واسع التوافق."
+  ],
+  [
+    "png-to-avif",
+    "Convertissez des PNG au format AVIF nouvelle génération.",
+    "Convierte PNG al formato AVIF de nueva generación.",
+    "PNG in das moderne AVIF-Format umwandeln.",
+    "حوّل PNG إلى تنسيق AVIF الحديث."
+  ],
+  [
+    "jpg-to-avif",
+    "Compressez des photos JPG au format AVIF nouvelle génération.",
+    "Comprime fotos JPG en formato AVIF de nueva generación.",
+    "JPG-Fotos in das moderne AVIF-Format komprimieren.",
+    "اضغط صور JPG إلى تنسيق AVIF الحديث."
+  ],
+  [
+    "avif-to-jpg",
+    "Convertissez des AVIF en JPG universellement compatible.",
+    "Convierte AVIF a JPG de amplia compatibilidad.",
+    "AVIF-Bilder in universell unterstütztes JPG umwandeln.",
+    "حوّل صور AVIF إلى JPG واسع التوافق."
+  ],
+  [
+    "avif-to-png",
+    "Convertissez des AVIF en PNG décompressé sans perte supplémentaire.",
+    "Convierte AVIF a PNG sin pérdidas adicionales.",
+    "AVIF-Dateien verlustfrei in PNG dekomprimieren.",
+    "حوّل ملفات AVIF إلى PNG مفكوك الضغط دون فقدان إضافي."
+  ],
+  [
+    "tiff-to-jpg",
+    "Convertissez des TIFF non compressés en JPG plus légers.",
+    "Convierte TIFF sin comprimir a JPG manejable.",
+    "Unkomprimierte TIFF-Bilder in handliche JPG-Dateien umwandeln.",
+    "حوّل صور TIFF غير المضغوطة إلى JPG أخف حجمًا."
+  ],
+  [
+    "tiff-to-png",
+    "Convertissez des images TIFF en PNG avec transparence.",
+    "Convierte imágenes TIFF a PNG con transparencia.",
+    "TIFF-Grafiken in transparente PNG-Bilder umwandeln.",
+    "حوّل صور TIFF إلى PNG مع الشفافية."
+  ],
+  [
+    "bmp-to-jpg",
+    "Convertissez des images Windows Bitmap en JPG compacts.",
+    "Convierte mapas de bits de Windows en JPG compactos.",
+    "Windows-Bitmap-Bilder in kompakte JPGs umwandeln.",
+    "حوّل صور Windows Bitmap إلى JPG صغير الحجم."
+  ],
+  [
+    "svg-to-png",
+    "Convertissez des illustrations vectorielles SVG en PNG transparents.",
+    "Rasteriza ilustraciones SVG como PNG transparentes.",
+    "SVG-Vektorgrafiken als transparente PNG-Bilder rastern.",
+    "حوّل رسومات SVG المتجهية إلى صور PNG شفافة."
+  ],
+  [
+    "svg-to-jpg",
+    "Convertissez des graphiques vectoriels SVG en JPG standard.",
+    "Rasteriza gráficos vectoriales SVG como JPG estándar.",
+    "SVG-Vektorgrafiken als Standard-JPG rastern.",
+    "حوّل رسومات SVG المتجهية إلى JPG قياسي."
+  ],
+  [
+    "ico-to-png",
+    "Extrayez des icônes de site ICO en PNG modifiables.",
+    "Extrae iconos de sitio ICO como PNG editables.",
+    "ICO-Website-Symbole als bearbeitbare PNGs extrahieren.",
+    "استخرج أيقونات المواقع ICO إلى PNG قابل للتعديل."
+  ],
+  [
+    "gif-to-webp",
+    "Convertissez des animations GIF volumineuses en WebP animé léger.",
+    "Convierte animaciones GIF pesadas en WebP animado ligero.",
+    "Große GIF-Animationen in leichte animierte WebP-Dateien umwandeln.",
+    "حوّل رسوم GIF المتحركة الكبيرة إلى WebP متحرك خفيف."
+  ],
+  [
+    "markdown-editor",
+    "Éditeur Markdown interactif avec aperçu dans le navigateur.",
+    "Editor Markdown interactivo con vista previa en el navegador.",
+    "Interaktiver Markdown-Editor mit Vorschau im Browser.",
+    "محرر Markdown تفاعلي مع معاينة في المتصفح."
+  ],
+  [
+    "image-converter",
+    "Convertisseur d’images multiformat par lots.",
+    "Conversor de imágenes multiformato por lotes.",
+    "Universeller Bildkonverter mit Stapelverarbeitung.",
+    "محول صور متعدد التنسيقات يدعم الدفعات."
+  ],
+  [
+    "view-documents-online",
+    "Ouvrez et consultez PDF, Word DOCX, Excel XLSX, PPTX et images dans le navigateur sans logiciel supplémentaire.",
+    "Abre y visualiza PDF, Word DOCX, Excel XLSX, PPTX e imágenes en el navegador sin programas adicionales.",
+    "PDF, Word DOCX, Excel XLSX, PPTX und Bilder direkt im Browser ohne zusätzliche Software öffnen.",
+    "افتح واعرض PDF وWord DOCX وExcel XLSX وPPTX والصور في متصفحك بدون برامج إضافية."
+  ],
+  [
+    "merge-pdf",
+    "Fusionnez plusieurs PDF en un document organisé dans l’ordre de votre choix.",
+    "Combina varios PDF en un documento organizado en el orden que elijas.",
+    "Mehrere PDFs in der gewünschten Reihenfolge zu einem Dokument zusammenführen.",
+    "ادمج عدة ملفات PDF في مستند منظم بالترتيب الذي تختاره."
+  ],
+  [
+    "compress-pdf",
+    "Réduisez fortement la taille des PDF en préservant la qualité du texte vectoriel et des images.",
+    "Reduce el tamaño del PDF conservando la calidad del texto vectorial y las imágenes.",
+    "PDF-Dateigröße reduzieren und dabei die Qualität von Vektortext und Bildern erhalten.",
+    "قلّل حجم PDF مع الحفاظ على جودة النصوص المتجهية والصور."
+  ],
+  [
+    "split-pdf",
+    "Extrayez des pages choisies ou divisez un PDF en plusieurs fichiers.",
+    "Extrae páginas concretas o divide un PDF en archivos separados.",
+    "Ausgewählte Seiten extrahieren oder große PDFs in einzelne Dateien aufteilen.",
+    "استخرج صفحات محددة أو قسّم مستندات PDF الكبيرة إلى ملفات منفصلة."
+  ],
+  [
+    "rotate-pdf",
+    "Tournez les pages PDF de 90, 180 ou 270 degrés dans l’un ou l’autre sens.",
+    "Gira páginas PDF de forma permanente 90, 180 o 270 grados en cualquier sentido.",
+    "PDF-Seiten dauerhaft um 90, 180 oder 270 Grad in beide Richtungen drehen.",
+    "دوّر صفحات PDF بشكل دائم 90 أو180 أو270 درجة باتجاه عقارب الساعة أو عكسها."
+  ],
+  [
+    "protect-pdf",
+    "Chiffrez vos PDF par mot de passe AES-128/256 pour bloquer les accès non autorisés.",
+    "Cifra tus PDF con contraseña AES-128/256 para evitar accesos no autorizados.",
+    "PDFs mit AES-128/256-Passwortschutz gegen unbefugten Zugriff verschlüsseln.",
+    "شفّر PDF بكلمة مرور AES-128/256 لمنع الوصول غير المصرح به."
+  ],
+  [
+    "unlock-pdf",
+    "Retirez les mots de passe et restrictions des PDF que vous êtes autorisé à déverrouiller.",
+    "Quita contraseñas y restricciones de PDF que tengas autorización para desbloquear.",
+    "Passwortschutz und Bearbeitungsbeschränkungen aus PDFs entfernen, die Sie entsperren dürfen.",
+    "أزل كلمات المرور وقيود التحرير من ملفات PDF التي تملك صلاحية فتحها."
+  ]
+]

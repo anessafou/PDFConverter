@@ -202,7 +202,7 @@ export const TOOLS_REGISTRY: Record<string, ToolDefinition> = {
     category: 'document',
     inputFormat: ['.pdf'],
     outputFormat: 'pdf',
-    description: 'Extract selected pages or divide large PDF documents into separate individual files.',
+    description: 'Download a ZIP containing one PDF for each page.',
     isClientReady: true,
   },
   'rotate-pdf': {
@@ -212,7 +212,7 @@ export const TOOLS_REGISTRY: Record<string, ToolDefinition> = {
     category: 'document',
     inputFormat: ['.pdf'],
     outputFormat: 'pdf',
-    description: 'Rotate PDF pages clockwise or counterclockwise 90, 180, or 270 degrees permanently.',
+    description: 'Rotate every page 90 degrees clockwise and download a new PDF.',
     isClientReady: true,
   },
   'protect-pdf': {
@@ -222,7 +222,7 @@ export const TOOLS_REGISTRY: Record<string, ToolDefinition> = {
     category: 'document',
     inputFormat: ['.pdf'],
     outputFormat: 'pdf',
-    description: 'Encrypt your PDF with standard AES-128/256 password protection to prevent unauthorized access.',
+    description: 'Password protection requires a compatible conversion service and is unverified.',
     isClientReady: true,
   },
   'unlock-pdf': {
@@ -232,7 +232,7 @@ export const TOOLS_REGISTRY: Record<string, ToolDefinition> = {
     category: 'document',
     inputFormat: ['.pdf'],
     outputFormat: 'pdf',
-    description: 'Remove password security and editing restrictions from PDFs you have authorization to unlock.',
+    description: 'Unlocking requires a compatible service. This page does not accept an existing PDF password.',
     isClientReady: true,
   },
 };

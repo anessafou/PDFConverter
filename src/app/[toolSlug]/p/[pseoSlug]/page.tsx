@@ -1,13 +1,16 @@
+import Breadcrumbs, { toolTrail } from '@/components/Breadcrumbs';
+import { localizedPseoHeading, localizedPseoMetadata } from '@/config/localized-pseo-metadata';
+import { SITE_URL } from '@/config/page-metadata';
+import JsonLd from '@/components/JsonLd';
 // src/app/[toolSlug]/p/[pseoSlug]/page.tsx
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import {
   SUPPORTED_LOCALES,
   Locale,
-  generateHreflangAlternates,
 } from '@/config/i18n-registry';
 import { TOOLS_REGISTRY } from '@/config/tools-registry';
-import { resolveLocalizedPseo, LOCALIZED_MODIFIERS } from '@/config/i18n-pseo';
+import { getPublishedPseoPages, resolvePublishedPseo } from '@/config/pseo-publication';
 
 import FrenchPseoTemplate from '@/components/pseo/templates/FrenchPseoTemplate';
 import SpanishPseoTemplate from '@/components/pseo/templates/SpanishPseoTemplate';
@@ -19,27 +22,9 @@ export const dynamicParams = false;
 
 // Statically pre-render only legitimate localized pSEO routes at build time
 export async function generateStaticParams() {
-  const locales: Locale[] = ['fr', 'es', 'de', 'ar'];
-  const params: { toolSlug: string; pseoSlug: string }[] = [];
-
-  const conversionTools = Object.values(TOOLS_REGISTRY).filter((t) => t.category !== 'utility');
-  
-  // TS Fix: Derive valid modifiers directly from the localized registry to guarantee type safety
-  const validModifiers = Object.keys(LOCALIZED_MODIFIERS.en) as Array<keyof typeof LOCALIZED_MODIFIERS['en']>;
-
-  for (const locale of locales) {
-    for (const tool of conversionTools) {
-      for (const mod of validModifiers) {
-        const localizedMod = LOCALIZED_MODIFIERS[locale][mod];
-        params.push({
-          toolSlug: locale, // using folder param name but injecting locale
-          pseoSlug: `${tool.slug}-${localizedMod}`,
-        });
-      }
-    }
-  }
-
-  return params;
+  return getPublishedPseoPages().filter(page => page.locale !== 'en').map(page => ({
+    toolSlug: page.locale, pseoSlug: page.path.split('/').at(-1)!,
+  }));
 }
 
 export async function generateMetadata({
@@ -50,22 +35,12 @@ export async function generateMetadata({
   const { toolSlug, pseoSlug } = await params;
   const locale = toolSlug as Locale;
 
-  if (!SUPPORTED_LOCALES.includes(locale)) return {};
+  if (locale === 'en' || !SUPPORTED_LOCALES.includes(locale)) return {};
 
-  const match = resolveLocalizedPseo(locale, pseoSlug);
-  if (!match || !TOOLS_REGISTRY[match.canonicalToolSlug]) return {};
+  const match = resolvePublishedPseo(locale, pseoSlug);
+  if (!match || match.intent.kind !== 'platform' || !TOOLS_REGISTRY[match.toolSlug]) return {};
 
-  const tool = TOOLS_REGISTRY[match.canonicalToolSlug];
-  const hreflang = generateHreflangAlternates(match.canonicalToolSlug);
-
-  return {
-    title: `${tool.name} - PDFConverter`,
-    alternates: {
-      canonical: `https://www.pdfconverter.space/${locale}/p/${pseoSlug}`,
-      languages: hreflang.languages,
-    },
-    robots: { index: true, follow: true },
-  };
+  return localizedPseoMetadata(match);
 }
 
 export default async function LocalizedPseoPage({
@@ -76,27 +51,34 @@ export default async function LocalizedPseoPage({
   const { toolSlug, pseoSlug } = await params;
   const locale = toolSlug as Locale;
 
-  if (!SUPPORTED_LOCALES.includes(locale)) notFound();
+  if (locale === 'en' || !SUPPORTED_LOCALES.includes(locale)) notFound();
 
-  const match = resolveLocalizedPseo(locale, pseoSlug);
-  if (!match || !TOOLS_REGISTRY[match.canonicalToolSlug]) notFound();
+  const match = resolvePublishedPseo(locale, pseoSlug);
+  if (!match || match.intent.kind !== 'platform' || !TOOLS_REGISTRY[match.toolSlug]) notFound();
 
-  const tool = TOOLS_REGISTRY[match.canonicalToolSlug];
+  const tool = TOOLS_REGISTRY[match.toolSlug];
 
-  // Strictly dispatch to culturally differentiated templates
+  const url = SITE_URL + match.path;
+  const name = localizedPseoHeading(locale, tool.slug, match.intent.modifier);
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-darkBg py-12 px-4 transition-colors">
+      <JsonLd data={{
+        '@context': 'https://schema.org', '@type': 'WebPage', url, name, inLanguage: locale,
+      }} />
+      <div className="max-w-4xl mx-auto mb-4">
+        <Breadcrumbs locale={locale} centered trail={[...toolTrail(locale, tool), { href: match.path, name }]} />
+      </div>
       {locale === 'fr' && (
-        <FrenchPseoTemplate tool={tool} modifier={match.modifier as any} canonicalSlug={tool.slug} />
+        <FrenchPseoTemplate tool={tool} modifier={match.intent.modifier} canonicalSlug={tool.slug} />
       )}
       {locale === 'es' && (
-        <SpanishPseoTemplate tool={tool} modifier={match.modifier as any} canonicalSlug={tool.slug} />
+        <SpanishPseoTemplate tool={tool} modifier={match.intent.modifier} canonicalSlug={tool.slug} />
       )}
       {locale === 'de' && (
-        <GermanPseoTemplate tool={tool} modifier={match.modifier as any} canonicalSlug={tool.slug} />
+        <GermanPseoTemplate tool={tool} modifier={match.intent.modifier} canonicalSlug={tool.slug} />
       )}
       {locale === 'ar' && (
-        <ArabicPseoTemplate tool={tool} modifier={match.modifier as any} canonicalSlug={tool.slug} />
+        <ArabicPseoTemplate tool={tool} modifier={match.intent.modifier} canonicalSlug={tool.slug} />
       )}
     </main>
   );

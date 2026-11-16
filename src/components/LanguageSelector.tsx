@@ -1,5 +1,8 @@
 // src/components/LanguageSelector.tsx
 'use client';
+import { useTranslations, useLocalizedPath, useLocale } from '@/locales/LocaleProvider';
+
+import { localizePath } from '@/locales/routing';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
@@ -12,6 +15,9 @@ import {
 } from '@/config/i18n-registry';
 
 export default function LanguageSelector() {
+  const locale = useLocale();
+  const t = useTranslations();
+
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -40,24 +46,7 @@ export default function LanguageSelector() {
     // 1. Language persistence via Cookie
     document.cookie = `NEXT_LOCALE=${targetLocale}; path=/; max-age=31536000; SameSite=Lax`;
 
-    // 2. Navigation Logic
-    // If on homepage
-    if (segments.length === 0 || (segments.length === 1 && SUPPORTED_LOCALES.includes(firstSegment!))) {
-      router.push(targetLocale === 'en' ? '/' : `/${targetLocale}`);
-      return;
-    }
-
-    // Resolve current tool slug
-    const currentSlug = segments[segments.length - 1];
-    const canonicalSlug = getCanonicalSlugFromLocalized(currentSlug, currentLocale);
-
-    if (canonicalSlug) {
-      const targetSlug = getLocalizedSlug(canonicalSlug, targetLocale);
-      const targetUrl = targetLocale === 'en' ? `/${targetSlug}` : `/${targetLocale}/${targetSlug}`;
-      router.push(targetUrl);
-    } else {
-      router.push(targetLocale === 'en' ? '/' : `/${targetLocale}`);
-    }
+    router.push(localizePath(pathname + window.location.search + window.location.hash, targetLocale));
   };
 
   const activeMeta = LOCALES_CONFIG[currentLocale];
@@ -67,11 +56,13 @@ export default function LanguageSelector() {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-haspopup="menu"
         className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111625] text-xs font-semibold text-slate-700 dark:text-slate-300 hover:border-[#FF2E54] hover:text-[#FF2E54] transition-all shadow-sm"
-        aria-label="Select Language"
+        aria-label={t("Select Language")}
       >
-        <span>{activeMeta.flag}</span>
-        <span className="hidden sm:inline">{activeMeta.nativeName}</span>
+        <span>{t(activeMeta.flag)}</span>
+        <span className="hidden sm:inline">{t(activeMeta.nativeName)}</span>
         <svg className="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
@@ -94,8 +85,8 @@ export default function LanguageSelector() {
                 }`}
               >
                 <span className="flex items-center gap-2">
-                  <span>{meta.flag}</span>
-                  <span>{meta.nativeName}</span>
+                  <span>{t(meta.flag)}</span>
+                  <span>{t(meta.nativeName)}</span>
                 </span>
                 {isSelected && <span className="text-[#FF2E54]">✓</span>}
               </button>

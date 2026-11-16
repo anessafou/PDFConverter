@@ -11,11 +11,15 @@ export async function GET(req: NextRequest) {
   const starParam = searchParams.get('stars');
   const sortByParam = searchParams.get('sortBy') as 'newest' | 'highest' | 'lowest' | null;
 
-  if (itemSlug !== 'site' && !TOOLS_REGISTRY[itemSlug]) {
+  if (itemSlug !== 'site' && !Object.hasOwn(TOOLS_REGISTRY, itemSlug)) {
     return NextResponse.json({ error: 'Converter not found.' }, { status: 404 });
   }
 
-  const starFilter = starParam ? parseInt(starParam, 10) : undefined;
+  const starFilter = starParam === null ? undefined : Number(starParam);
+  if ((starFilter !== undefined && (!Number.isInteger(starFilter) || starFilter < 1 || starFilter > 5)) ||
+      (sortByParam !== null && !['newest', 'highest', 'lowest'].includes(sortByParam))) {
+    return NextResponse.json({ error: 'Invalid rating filter or sort order.' }, { status: 400 });
+  }
   const sortBy = sortByParam || 'newest';
 
   try {
@@ -25,7 +29,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     return NextResponse.json(
-      { reviews, stats },
+      { reviews: reviews.map(({ ipHash, ...review }) => review), stats },
       {
         headers: {
           'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=120',
@@ -33,8 +37,8 @@ export async function GET(req: NextRequest) {
       }
     );
   } catch (error) {
-    console.error('Error querying reviews:', error);
-    return NextResponse.json({ error: 'Failed to retrieve reviews.' }, { status: 500 });
+    console.error('Review data unavailable.');
+    return NextResponse.json({ reviews: [], stats: null });
   }
 }
 
@@ -62,18 +66,18 @@ export async function POST(req: NextRequest) {
     const review = await reviewsRepository.createReview(validation.cleanData, ipHash);
 
     // Revalidate the tool page for fresh ISR caches
-    revalidatePath(`/${validation.cleanData.itemSlug}`);
+    revalidatePath('/', 'layout');
 
     return NextResponse.json(
       {
         message: 'Your review has been submitted and published successfully!',
-        review,
+        review: (({ ipHash, ...publicReview }) => publicReview)(review),
       },
       { status: 201 }
     );
   } catch (error) {
-    console.error('Review submission error:', error);
-    return NextResponse.json({ error: 'Could not process review submission.' }, { status: 500 });
+    console.error('Review submission failed.');
+    return NextResponse.json({ error: 'Could not process review submission.' }, { status: 503 });
   }
 }
 
@@ -91,7 +95,7 @@ export async function PATCH(req: NextRequest) {
 
     return NextResponse.json({ helpfulCount: newCount });
   } catch (error) {
-    console.error('Helpful vote error:', error);
+    console.error('Helpful vote failed.');
     return NextResponse.json({ error: 'Failed to record vote' }, { status: 500 });
   }
 }

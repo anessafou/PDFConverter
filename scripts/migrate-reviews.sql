@@ -1,0 +1,3 @@
+BEGIN;
+ALTER TABLE reviews ADD COLUMN IF NOT EXISTS helpful_count INTEGER NOT NULL DEFAULT 0 CHECK (helpful_count >= 0);
+COMMIT;

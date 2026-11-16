@@ -1,60 +1,63 @@
+import { existingPathAlternates, pageMetadata } from '@/config/page-metadata';
+
+import { requestLocale } from '@/locales/server';
+import { translate } from '@/locales/translate';
+import { localizePath } from '@/locales/routing';
 // src/app/terms/page.tsx
 import { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = {
-  title: 'Terms of Service - PDFConverter',
-  description: 'Review the terms and conditions governing the use of PDFConverter online services.',
-  alternates: {
-    canonical: 'https://www.pdfconverter.space/terms',
-  },
-};
+const languages = existingPathAlternates('/terms');
+export const metadata: Metadata = pageMetadata('en',
+  'Terms of Service - PDFConverter',
+  'Review the terms and conditions governing the use of PDFConverter online services.',
+  languages.en, languages,
+);
 
-export default function TermsPage() {
+export default async function TermsPage() {
+  const locale = await requestLocale();
+  const t = (value: string) => translate(locale, value);
+  const linkTo = (href: string) => localizePath(href, locale);
+
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-darkBg text-slate-800 dark:text-slate-200 py-16 px-4 sm:px-6 lg:px-8 transition-colors">
       <div className="max-w-3xl mx-auto bg-white dark:bg-[#111625] rounded-3xl p-8 sm:p-12 border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-8">
         <div>
           <nav className="text-xs text-slate-400 mb-4">
-            <Link href="/" className="hover:underline">Home</Link> / <span>Terms of Service</span>
+            <Link href={linkTo("/")} className="hover:underline">{t("Home")}</Link> / <span>{t("Terms of Service")}</span>
           </nav>
           <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
-            Terms of Service
-          </h1>
-          <p className="text-xs text-slate-400 mt-1">Last updated: October 2026</p>
+            {t("Terms of Service")}</h1>
+          <p className="text-xs text-slate-400 mt-1">{t("Last updated: October 2026")}</p>
         </div>
 
         <section className="space-y-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">1. Acceptance of Terms</h2>
+          <h2 className="text-base font-bold text-slate-900 dark:text-white">{t("1. Acceptance of Terms")}</h2>
           <p>
-            By accessing and using PDFConverter (www.pdfconverter.space), you agree to comply with and be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use the service.
-          </p>
+            {t("By accessing and using PDFConverter (www.pdfconverter.space), you agree to comply with and be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use the service.")}</p>
         </section>
 
         <section className="space-y-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">2. Permitted Use</h2>
+          <h2 className="text-base font-bold text-slate-900 dark:text-white">{t("2. Permitted Use")}</h2>
           <p>
-            PDFConverter provides free browser-based and server-assisted document utilities. You may use our tools for lawful personal, academic, and commercial purposes. You agree not to:
-          </p>
+            {t("PDFConverter provides free browser-based and server-assisted document utilities. You may use our tools for lawful personal, academic, and commercial purposes. You agree not to:")}</p>
           <ul className="list-disc pl-5 space-y-1">
-            <li>Attempt to probe, scan, or exploit security vulnerabilities in our infrastructure.</li>
-            <li>Launch automated denial-of-service attacks or flood endpoints with malicious payloads.</li>
-            <li>Upload documents containing malware, viruses, or illegal material.</li>
+            <li>{t("Attempt to probe, scan, or exploit security vulnerabilities in our infrastructure.")}</li>
+            <li>{t("Launch automated denial-of-service attacks or flood endpoints with malicious payloads.")}</li>
+            <li>{t("Upload documents containing malware, viruses, or illegal material.")}</li>
           </ul>
         </section>
 
         <section className="space-y-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">3. Document Ownership and Intellectual Property</h2>
+          <h2 className="text-base font-bold text-slate-900 dark:text-white">{t("3. Document Ownership and Intellectual Property")}</h2>
           <p>
-            You retain 100% ownership and copyright of all documents and files processed through our platform. PDFConverter claims no intellectual property rights over any file content submitted to or generated by our tools.
-          </p>
+            {t("You retain 100% ownership and copyright of all documents and files processed through our platform. PDFConverter claims no intellectual property rights over any file content submitted to or generated by our tools.")}</p>
         </section>
 
         <section className="space-y-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-          <h2 className="text-base font-bold text-slate-900 dark:text-white">4. Disclaimer of Warranties</h2>
+          <h2 className="text-base font-bold text-slate-900 dark:text-white">{t("4. Disclaimer of Warranties")}</h2>
           <p>
-            Our services are provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo; without warranties of any kind. While we strive for 100% conversion accuracy and high uptime, we do not guarantee that file conversions will be error-free or uninterrupted.
-          </p>
+            {t("Our services are provided “as is” and “as available” without warranties of any kind. While we strive for 100% conversion accuracy and high uptime, we do not guarantee that file conversions will be error-free or uninterrupted.")}</p>
         </section>
       </div>
     </main>
