@@ -75,12 +75,16 @@ const details: Partial<Record<string, readonly Detail[]>> = {
   'pdf-to-json': ['pdfText', 'pdfJson'], 'pdf-to-xml': ['pdfText', 'pdfXml'],
   'pdf-to-html': ['pdfText', 'pdfHtml'], 'pdf-to-long-image': ['longImage'], 'pdf-to-base64': ['base64'],
   'docx-to-txt': ['docxText'], 'docx-to-html': ['docxHtml'], 'xlsx-to-csv': ['csv'],
-  'pdf-to-word': ['pdfOffice'], 'pdf-to-excel': ['pdfOffice'], 'pdf-to-ppt': ['pdfOffice'],
+  'pdf-to-word': ['pdfWord'], 'pdf-to-excel': ['pdfExcel'], 'pdf-to-ppt': ['pdfSlides'],
   'pdf-to-csv': ['pdfOffice'], 'pdf-to-rtf': ['pdfOffice'], 'pdf-to-latex': ['pdfOffice'],
   'word-to-pdf': ['officePdf'], 'doc-to-pdf': ['officePdf'], 'ppt-to-pdf': ['officePdf'],
   'excel-to-pdf': ['officePdf'], 'odt-to-pdf': ['officePdf'], 'ods-to-pdf': ['officePdf'], 'odp-to-pdf': ['officePdf'],
-  'compress-pdf': ['compress'], 'protect-pdf': ['protect'], 'unlock-pdf': ['protect'],
+  'compress-pdf': ['compress'], 'protect-pdf': ['protect'], 'unlock-pdf': ['unlock'],
   'pdf-to-scanned-document': ['scan'], 'pdf-to-pdfa': ['pdfa'],
+  'heic-to-jpg': ['decodeImage'], 'heic-to-png': ['decodeImage'],
+  'tiff-to-jpg': ['decodeImage'], 'tiff-to-png': ['decodeImage'],
+  'avif-to-jpg': ['decodeImage'], 'avif-to-png': ['decodeImage'],
+  'png-to-avif': ['encodeImage'], 'jpg-to-avif': ['encodeImage'],
   'image-converter': ['imageUtility'], 'view-documents-online': ['viewer'], 'markdown-editor': ['markdown'],
 };
 const platforms = {
@@ -117,12 +121,13 @@ export function getToolContent(tool: ToolDefinition, locale: Locale, modifier?: 
     faqs.push({ q: copy[question][index], a: copy[answer][index] });
   }
   return {
+    availability: worker ? toolCopy.availability[index] : undefined,
     description: tool.category === 'utility' ? outcome : fill(copy.formats[index]) + ' ' + outcome + (worker ? ' ' + processing : ''),
     formats: fill(copy.formats[index]),
     faqs,
     specs: [
       { label: copy.input[index], value: input },
-      { label: copy.output[index], value: output },
+      { label: worker ? toolCopy.requested[index] : copy.output[index], value: output },
       { label: copy.size[index], value: copy.limit[index] },
     ],
   };

@@ -19,6 +19,7 @@ export default function LocalizedGuideDetails({ locale, content, editorial }: {
           </div>
         ))}
       </div>
+      {content.availability && <p className="text-sm">{content.availability}</p>}
       {editorial && (
         <div className="space-y-4 border-t border-slate-200 dark:border-slate-800 pt-5">
           <h2 className="text-xl font-bold text-slate-900 dark:text-white">{editorial.heading}</h2>

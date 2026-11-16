@@ -180,8 +180,12 @@ export function getPlatformContent(tool: ToolDefinition, modifier: PseoModifier)
   const labels = { 'for-mac': 'Mac', 'for-windows': 'Windows', 'on-iphone': 'iPhone', 'without-watermark': 'Watermarks' };
   const platform = labels[modifier];
   const sourceStep = modifier === 'on-iphone'
-    ? `Use the file picker to choose a supported file from Files or available storage. ${capability.choose} Photos are suitable only when their actual format is accepted.`
-    : `${capability.choose} Use Choose File or drop the supported file into the upload area.`;
+    ? `Use the file picker to choose a supported file from Files or available storage. ${capability.choose} Check the file extension before uploading.`
+    : modifier === 'for-windows'
+      ? `${capability.choose} If the extension is hidden, show file name extensions in File Explorer before opening the picker.`
+      : modifier === 'for-mac'
+        ? `${capability.choose} If the file is only in iCloud Drive, make sure it is available to open from Finder.`
+        : capability.choose;
   const processing = capability.mode === 'service' ? 'Conversion service' : capability.mode === 'browser-dependent' ? 'Depends on browser format support' : 'Browser processing';
   const base: PlatformContent = {
     heroBadge: modifier === 'without-watermark' ? 'Check the exported file for existing marks' : `${platform} browser workflow`,
@@ -190,7 +194,7 @@ export function getPlatformContent(tool: ToolDefinition, modifier: PseoModifier)
     steps: [
       { num: '1', title: tool.slug === 'merge-pdf' ? 'Choose the PDF inputs' : 'Choose a supported source', desc: sourceStep },
       { num: '2', title: 'Run the supported operation', desc: capability.summary },
-      { num: '3', title: 'Download and check the output', desc: `${capability.result} ${modifier === 'on-iphone' ? 'Use the browser download controls to locate the saved file in Files; the exact prompt depends on your browser settings.' : 'Use your browser download list to locate the saved file.'}` },
+      { num: '3', title: 'Download and check the output', desc: `${capability.mode === 'service' ? 'If the service returns a download, open it in the intended app and verify its contents.' : capability.result} ${modifier === 'on-iphone' ? 'Use the browser download controls to locate the saved file in Files; the exact prompt depends on your browser settings.' : 'Use your browser download list to locate the saved file.'}` },
     ],
     specs: [
       { label: 'Supported input', value: capability.input },
