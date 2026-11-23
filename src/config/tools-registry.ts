@@ -236,3 +236,5 @@ export const TOOLS_REGISTRY: Record<string, ToolDefinition> = {
     isClientReady: true,
   },
 };
+/** Registered directory entries; service-dependent tools expose conditional availability. */
+export const REGISTERED_TOOL_COUNT = Object.keys(TOOLS_REGISTRY).length;

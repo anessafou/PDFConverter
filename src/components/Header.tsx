@@ -1,5 +1,6 @@
 // src/components/Header.tsx
 'use client';
+import { REGISTERED_TOOL_COUNT } from '@/config/tools-registry';
 import { useTranslations, useLocalizedPath, useLocale } from '@/locales/LocaleProvider';
 
 
@@ -60,7 +61,7 @@ export default function Header() {
                   <Link href={linkTo(makeLink('pdf-to-word'))} className="block px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800">{t("PDF to Word")}</Link>
                   <Link href={linkTo(makeLink('jpg-to-pdf'))} className="block px-3 py-2 rounded-xl text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800">{t("JPG to PDF")}</Link>
                   <Link href={linkTo(currentLocale === 'en' ? '/#all-tools' : `/${currentLocale}#all-tools`)} className="block px-3 py-2 text-xs font-bold text-[#FF2E54] border-t border-slate-100 dark:border-slate-800 mt-1">
-                    {t("Explore all 86 tools →")}</Link>
+                    {t("Explore all {0} tools →").replace("{0}", String(REGISTERED_TOOL_COUNT))}</Link>
                 </div>
               )}
             </div>

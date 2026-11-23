@@ -1,3 +1,4 @@
+import { ENGLISH_SERVICE_EDITORIAL } from './english-service-editorial';
 import type { ToolDefinition, PseoModifier } from './tools-registry';
 import { englishToolCapability } from './english-tool-capabilities';
 
@@ -212,6 +213,20 @@ export function getPlatformContent(tool: ToolDefinition, modifier: PseoModifier)
     ],
   };
 
+  if (tool.slug === 'pdf-to-word' && modifier === 'without-watermark') {
+    const core = ENGLISH_SERVICE_EDITORIAL['pdf-to-word'];
+    return {
+      ...base,
+      guideTitle: 'PDF to Word and watermark expectations',
+      guideText: 'Request a DOCX copy through the conversion service. This page has no watermark-removal control. Whether the service adds a mark must be checked in the returned file.',
+      steps: [
+        { num: '1', title: 'Choose the PDF you want to edit', desc: 'Select one PDF up to 25 MiB. Keep a copy of the original. A PDF containing only scans needs OCR to become editable text; OCR support is unverified.' },
+        { num: '2', title: 'Request Word output', desc: 'Use the conversion button to send the PDF to the configured service. PDF to Word must be supported by that service. The page shows an error if conversion fails.' },
+        { num: '3', title: 'Check text and watermarks in Word', desc: 'If a DOCX is returned, open it in Word. Compare text, pictures and any source watermark. For a letterhead PDF, for example, check whether the letterhead remains useful. Conversion is not a reliable way to remove it.' },
+      ],
+      faqs: [...core.faqs.slice(0, 3), { q: 'Will this remove an existing PDF watermark?', a: 'There is no watermark-removal control. Do not expect a mark in the original PDF to disappear. Check the returned document before using it.' }, { q: 'Will the converter add its own watermark?', a: 'This operation uses a conversion service. The site cannot promise watermark-free output without verifying that service and the returned document.' }],
+    };
+  }
   const override = platformOverrides[tool.slug]?.[modifier];
   return override ? { ...base, ...override, specs: base.specs } : base;
 }

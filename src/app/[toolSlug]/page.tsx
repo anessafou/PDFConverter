@@ -86,7 +86,7 @@ export default async function ToolOrLocalePage({
         )}
 
         <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-          {t(tool.name)}
+          {copy.h1}
         </h1>
         <p className="text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
           {englishGuide?.introduction ?? copy.description}
