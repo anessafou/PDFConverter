@@ -29,7 +29,7 @@ test('the five selected English core tools have distinct, practical, capability-
     introductions.add(guide.introduction);
   }
   assert.equal(introductions.size, slugs.length, 'each tool has its own introduction');
-  assert.equal(getEnglishCoreToolGuide('compress-pdf'), null, 'scope excludes other tools');
+  assert.equal(getEnglishCoreToolGuide('pdf-to-rtf'), null, 'tools outside the reviewed editorial scope remain unchanged');
 });
 
 test('the core content addition preserves existing English metadata and all published routes/tools', () => {

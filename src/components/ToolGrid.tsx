@@ -5,7 +5,7 @@ import { useTranslations, useLocalizedPath, useLocale } from '@/locales/LocalePr
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { TOOLS_REGISTRY, ToolDefinition, ServiceCategory } from '@/config/tools-registry';
+import { TOOLS_REGISTRY, REGISTERED_TOOL_COUNT, ToolDefinition, ServiceCategory } from '@/config/tools-registry';
 
 // Filter tabs matching the screenshot
 const FILTER_TABS: { label: string; value: ServiceCategory | 'all' }[] = [
@@ -47,7 +47,7 @@ export default function ToolGrid() {
       {/* ─── 1. SECTION HEADER ────────────────────────────────────── */}
       <div className="text-center max-w-3xl mx-auto mb-10">
         <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-          {t("Explore All ")}<span className="text-[#FF2E54]">79+</span> {t(" Converters & Document Tools")}</h2>
+          {t("Explore All ")}<span className="text-[#FF2E54]">{REGISTERED_TOOL_COUNT}</span> {t(" Converters & Document Tools")}</h2>
         <p className="mt-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
           {t("Browse our complete collection of PDF tools and converters.")}</p>
       </div>
@@ -317,7 +317,10 @@ function getCleanSubtitle(tool: ToolDefinition): string {
   if (tool.slug === 'pdf-to-png') return 'Convert PDF to PNG images';
   if (tool.slug === 'pdf-to-txt') return 'Convert PDF to Text';
   if (tool.slug === 'word-to-pdf') return 'Convert Word files to PDF format';
-  if (tool.slug === 'jpg-to-pdf') return 'Merge images into a single PDF';
+  if (tool.slug === 'jpg-to-pdf') return 'Create a PDF from one JPG image';
+  if (tool.slug === 'pdf-to-pdfa') return 'Request PDF/A for long-term document archiving';
+  if (tool.slug === 'pdf-to-base64') return 'Encode PDF bytes as Base64 text';
+  if (tool.slug === 'pdf-to-long-image') return 'Combine PDF pages into one long PNG image';
 
   return `Convert ${inp} to ${out} format`;
 }

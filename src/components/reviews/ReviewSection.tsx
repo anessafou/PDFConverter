@@ -640,7 +640,7 @@ export default function ReviewSection({
                 <span className="hidden sm:inline text-slate-400 ml-2">{t("Use arrows (← →) or swipe to explore")}</span>
               </div>
               <span className="font-mono text-slate-500 dark:text-slate-400 font-semibold">
-                {processedReviews.length} {t(" verified reviews")}</span>
+                {processedReviews.length} {t(" reviews")}</span>
             </div>
           </div>
         ) : (
