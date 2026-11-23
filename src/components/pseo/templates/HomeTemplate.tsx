@@ -6,7 +6,7 @@ import React from 'react';
 import Link from 'next/link';
 import ConverterWidget from '@/components/ConverterWidget';
 import ToolGrid from '@/components/ToolGrid';
-import { TOOLS_REGISTRY } from '@/config/tools-registry';
+import { TOOLS_REGISTRY, REGISTERED_TOOL_COUNT } from '@/config/tools-registry';
 import { Locale, LOCALES_CONFIG } from '@/config/i18n-registry';
 
 interface HomeTemplateProps {
@@ -91,7 +91,7 @@ export default function HomeTemplate({ locale }: HomeTemplateProps) {
                   href="#all-tools"
                   className="px-7 py-3.5 bg-white dark:bg-darkBg-card hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 font-bold text-sm rounded-full transition-all"
                 >
-                  {t("Explore All 86 Tools")}</a>
+                  {t("Explore All {0} Tools").replace("{0}", String(REGISTERED_TOOL_COUNT))}</a>
               </div>
 
               <div className="grid grid-cols-3 gap-3 pt-4 max-w-lg mx-auto lg:mx-0 text-left">
@@ -142,7 +142,7 @@ export default function HomeTemplate({ locale }: HomeTemplateProps) {
               >
                 <span className="text-2xl block mb-2">{t(cat.icon)}</span>
                 <h3 className="text-xs font-bold text-slate-800 dark:text-slate-100 group-hover:text-[#FF2E54] transition-colors">{t(cat.name)}</h3>
-                <span className="text-[10px] text-slate-400 mt-0.5 block">{t(cat.count)}</span>
+                <span className="text-[10px] text-slate-400 mt-0.5 block">{String(Object.values(TOOLS_REGISTRY).filter(tool => tool.category === cat.slug).length) + " " + t("Tools")}</span>
               </Link>
             ))}
           </div>

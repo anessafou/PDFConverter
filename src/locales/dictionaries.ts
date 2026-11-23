@@ -1,3 +1,4 @@
+import { ENGLISH_SERVICE_EDITORIAL } from '@/config/english-service-editorial';
 import { TOOLS_REGISTRY } from '@/config/tools-registry';
 import { getToolContent } from '@/config/tool-content';
 import uiCatalog from './ui-catalog.json';
@@ -327,4 +328,8 @@ for (const tool of Object.values(TOOLS_REGISTRY)) {
     const { description, faqs } = getToolContent(tool, locale);
     Object.assign(DICTIONARIES[locale].tools[tool.slug], { description, faqs });
   }
+}
+
+for (const [slug, copy] of Object.entries(ENGLISH_SERVICE_EDITORIAL)) {
+  Object.assign(DICTIONARIES.en.tools[slug], { title: copy.title, h1: copy.h1, description: copy.description, faqs: copy.faqs });
 }

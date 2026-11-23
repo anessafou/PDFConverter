@@ -8,10 +8,10 @@
   ],
   [
     "Tools",
-    "Outils",
-    "Herramientas",
+    "outils",
+    "herramientas",
     "Werkzeuge",
-    "الأدوات"
+    "أدوات"
   ],
   [
     "Contact",
@@ -2798,5 +2798,54 @@
     " Si nos escribes, el formulario registra el nombre, el correo y el mensaje que envías.",
     " Wenn Sie uns kontaktieren, speichert das Formular den angegebenen Namen, die E-Mail-Adresse und Ihre Nachricht.",
     " إذا تواصلت معنا، يسجّل النموذج الاسم والبريد الإلكتروني والرسالة التي ترسلها."
+  ],
+  [
+    "Explore All {0} Tools",
+    "Découvrir les {0} outils",
+    "Explorar las {0} herramientas",
+    "Alle {0} Werkzeuge entdecken",
+    "استكشف جميع الأدوات وعددها {0}"
+  ],
+  [
+    "Explore all {0} tools →",
+    "Découvrir les {0} outils →",
+    "Explorar las {0} herramientas →",
+    "Alle {0} Werkzeuge entdecken →",
+    "استكشف جميع الأدوات وعددها {0} ←"
+  ],
+  [
+    "Request PDF/A for long-term document archiving",
+    "Demander un PDF/A pour l’archivage à long terme",
+    "Solicitar PDF/A para archivar documentos a largo plazo",
+    "PDF/A für die Langzeitarchivierung anfordern",
+    "طلب PDF/A لأرشفة المستندات على المدى الطويل"
+  ],
+  [
+    "Encode PDF bytes as Base64 text",
+    "Encoder le PDF en texte Base64",
+    "Codificar el PDF como texto Base64",
+    "PDF als Base64-Text codieren",
+    "ترميز ملف PDF كنص Base64"
+  ],
+  [
+    "Combine PDF pages into one long PNG image",
+    "Réunir les pages PDF en une longue image PNG",
+    "Unir las páginas PDF en una imagen PNG larga",
+    "PDF-Seiten zu einem langen PNG-Bild verbinden",
+    "دمج صفحات PDF في صورة PNG طويلة واحدة"
+  ],
+  [
+    "Create a PDF from one JPG image",
+    "Créer un PDF à partir d’une image JPG",
+    "Crear un PDF a partir de una imagen JPG",
+    "Ein PDF aus einem JPG-Bild erstellen",
+    "إنشاء PDF من صورة JPG واحدة"
+  ],
+  [
+    " reviews",
+    " avis",
+    " reseñas",
+    " Bewertungen",
+    " مراجعات"
   ]
 ]
