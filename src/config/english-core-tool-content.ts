@@ -1,3 +1,4 @@
+import { ENGLISH_SERVICE_EDITORIAL } from './english-service-editorial';
 export interface EnglishCoreToolStep {
   title: string;
   body: string;
@@ -13,6 +14,7 @@ export interface EnglishCoreToolGuide {
 }
 
 const guides: Record<string, EnglishCoreToolGuide> = {
+  ...Object.fromEntries(Object.entries(ENGLISH_SERVICE_EDITORIAL).map(([slug, copy]) => [slug, { ...copy, introduction: copy.description }])),
   'pdf-to-jpg': {
     heading: 'How to convert PDF to JPG',
     introduction: 'Convert every page of a PDF to a separate JPG image. The PDF to JPG converter runs in your browser; a one-page file gives you one image, while a multi-page file is packaged as a ZIP.',
